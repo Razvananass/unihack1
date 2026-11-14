@@ -1,0 +1,101 @@
+[
+  {
+    "id": "residence-permit",
+    "label": { "en": "Ask about residence permits", "ro": "Informații despre permisul de ședere", "fr": "Se renseigner sur le titre de séjour", "ar": "السؤال عن تصريح الإقامة" },
+    "ro": "Bună ziua! Aș dori informații despre permisul de ședere pentru studenți.",
+    "pron": "BOO-nuh ZEE-wah! ahsh doh-REE een-for-MAH-tsee-ee DES-preh per-MEE-sool deh SHEH-deh-reh PEN-troo stoo-DEN-tsee.",
+    "meaning": {
+      "en": "Good day! I would like information about the residence permit for students.",
+      "fr": "Bonjour ! Je voudrais des informations sur le titre de séjour pour étudiants.",
+      "ar": "مرحبًا! أود الحصول على معلومات عن تصريح الإقامة للطلاب."
+    }
+  },
+  {
+    "id": "documents",
+    "label": { "en": "Ask which documents are required", "ro": "Ce documente sunt necesare", "fr": "Demander quels documents sont requis", "ar": "السؤال عن المستندات المطلوبة" },
+    "ro": "Ce documente sunt necesare pentru această procedură?",
+    "pron": "cheh doh-koo-MEN-teh soont neh-cheh-SAH-reh PEN-troo ah-CHEH-ah-stuh proh-cheh-DOO-ruh?",
+    "meaning": {
+      "en": "Which documents are needed for this procedure?",
+      "fr": "Quels documents sont nécessaires pour cette procédure ?",
+      "ar": "ما المستندات المطلوبة لهذا الإجراء؟"
+    }
+  },
+  {
+    "id": "appointment",
+    "label": { "en": "Request an appointment", "ro": "Solicitarea unei programări", "fr": "Demander un rendez-vous", "ar": "طلب موعد" },
+    "ro": "Bună ziua, aș dori să fac o programare. Cum pot face o programare?",
+    "pron": "BOO-nuh ZEE-wah, ahsh doh-REE suh fahk oh proh-grah-MAH-reh. koom poht FAH-cheh oh proh-grah-MAH-reh?",
+    "meaning": {
+      "en": "Good day, I would like to make an appointment. How can I make an appointment?",
+      "fr": "Bonjour, je voudrais prendre rendez-vous. Comment puis-je prendre rendez-vous ?",
+      "ar": "مرحبًا، أود حجز موعد. كيف يمكنني حجز موعد؟"
+    }
+  },
+  {
+    "id": "health-insurance",
+    "label": { "en": "Ask about health insurance", "ro": "Întrebări despre asigurarea de sănătate", "fr": "Se renseigner sur l’assurance maladie", "ar": "السؤال عن التأمين الصحي" },
+    "ro": "Aș dori informații despre asigurarea de sănătate pentru studenți străini.",
+    "pron": "ahsh doh-REE een-for-MAH-tsee-ee DES-preh ah-see-goo-RAH-reh-ah deh suh-nuh-TAH-teh PEN-troo stoo-DEN-tsee struh-EE-nee.",
+    "meaning": {
+      "en": "I would like information about health insurance for foreign students.",
+      "fr": "Je voudrais des informations sur l’assurance maladie pour les étudiants étrangers.",
+      "ar": "أود الحصول على معلومات عن التأمين الصحي للطلاب الأجانب."
+    }
+  },
+  {
+    "id": "clarification",
+    "label": { "en": "Ask for clarification", "ro": "Cerere de clarificare", "fr": "Demander des précisions", "ar": "طلب توضيح" },
+    "ro": "Îmi cer scuze, nu vorbesc bine românește. Puteți vorbi mai rar, vă rog?",
+    "pron": "uhm chehr SKOO-zeh, noo vor-BESK BEE-neh roh-muh-NESH-teh. poo-TETS-ee vor-BEE migh RAHR, vuh rohg?",
+    "meaning": {
+      "en": "I am sorry, I do not speak Romanian well. Could you speak more slowly, please?",
+      "fr": "Excusez-moi, je ne parle pas bien roumain. Pourriez-vous parler plus lentement, s’il vous plaît ?",
+      "ar": "عذرًا، لا أتحدث الرومانية جيدًا. هل يمكنك التحدث ببطء أكثر من فضلك؟"
+    }
+  },
+  {
+    "id": "directions",
+    "label": { "en": "Ask for directions inside the building", "ro": "Indicații în interiorul clădirii", "fr": "Demander son chemin dans le bâtiment", "ar": "السؤال عن الاتجاهات داخل المبنى" },
+    "ro": "Mă puteți ajuta, vă rog? Unde se află ghișeul pentru străini?",
+    "pron": "muh poo-TETS-ee ah-zhoo-TAH, vuh rohg? OON-deh seh ah-FLUH gee-SHEH-ool PEN-troo struh-EE-nee?",
+    "meaning": {
+      "en": "Could you help me, please? Where is the counter for foreigners?",
+      "fr": "Pourriez-vous m’aider, s’il vous plaît ? Où se trouve le guichet pour les étrangers ?",
+      "ar": "هل يمكنك مساعدتي من فضلك؟ أين يوجد شباك الأجانب؟"
+    }
+  },
+  {
+    "id": "processing-time",
+    "label": { "en": "Ask about processing times", "ro": "Cât durează procesarea", "fr": "Demander les délais de traitement", "ar": "السؤال عن مدة المعالجة" },
+    "ro": "Cât durează de obicei procesarea cererii?",
+    "pron": "kuht doo-RAH-zuh deh oh-bee-CHAY proh-cheh-SAH-reh-ah cheh-REH-ree?",
+    "meaning": {
+      "en": "How long does processing of the application usually take?",
+      "fr": "Combien de temps dure généralement le traitement de la demande ?",
+      "ar": "كم تستغرق معالجة الطلب عادةً؟"
+    }
+  },
+  {
+    "id": "email-documents",
+    "label": { "en": "Email: ask about permit renewal documents", "ro": "E-mail: documente pentru prelungirea permisului", "fr": "E-mail : documents pour le renouvellement du titre", "ar": "بريد إلكتروني: مستندات تجديد التصريح" },
+    "ro": "Bună ziua,\n\nSunt student internațional la [numele universității]. Aș dori să aflu ce documente sunt necesare pentru prelungirea permisului de ședere.\n\nVă mulțumesc anticipat pentru răspuns.\n\nCu respect,\n[numele dumneavoastră]",
+    "pron": null,
+    "meaning": {
+      "en": "Good day,\n\nI am an international student at [name of university]. I would like to know which documents are needed to renew my residence permit.\n\nThank you in advance for your reply.\n\nKind regards,\n[your name]",
+      "fr": "Bonjour,\n\nJe suis étudiant international à [nom de l’université]. Je voudrais savoir quels documents sont nécessaires pour renouveler mon titre de séjour.\n\nMerci d’avance pour votre réponse.\n\nCordialement,\n[votre nom]",
+      "ar": "مرحبًا،\n\nأنا طالب دولي في [اسم الجامعة]. أود معرفة المستندات المطلوبة لتجديد تصريح إقامتي.\n\nأشكركم مقدمًا على ردكم.\n\nمع التحية،\n[اسمك]"
+    }
+  },
+  {
+    "id": "thanks",
+    "label": { "en": "Say thank you", "ro": "Mulțumiri", "fr": "Remercier", "ar": "قول شكرًا" },
+    "ro": "Vă mulțumesc pentru ajutor!",
+    "pron": "vuh mool-tsoo-MESK PEN-troo ah-YOO-tor!",
+    "meaning": {
+      "en": "Thank you for your help!",
+      "fr": "Merci pour votre aide !",
+      "ar": "شكرًا لكم على مساعدتكم!"
+    }
+  }
+]

@@ -1,0 +1,790 @@
+// Tests for the parts of welcomeRo that do not need a browser: checklist logic, onboarding rules,
+// data integrity, translations and the AI endpoint (with a fake network).
+// Run with:  npm test
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+
+import { procedures, institutions, phrases, sources, getProcedure } from '../src/data';
+import { buildChecklist, effectiveStatus, summarize, nextUp, pendingDependencies, sanitizeProgress, hasLimitedCoverage } from '../src/lib/checklist';
+import {
+  ACCOMMODATIONS, CITIZENSHIPS, COMPLETED_KEYS, SITUATIONS,
+  draftToProfile, isDraft, isProfile, normaliseCompleted, toggleCompleted, validateStep,
+} from '../src/lib/profile';
+import { parsePhraseReply } from '../src/lib/ai';
+import { addDays, buildIcs, buildPlan, daysBetween, formatDate, isIsoDate, sanitizeDates, validateDates } from '../src/lib/plan';
+import { docCounts, sanitizeDocs, toggleDoc } from '../src/lib/docs';
+import { kitQuestions } from '../src/data';
+import { speakableText } from '../src/lib/speech';
+import { dictionaries, LANGUAGES, localize, translate, type MessageKey } from '../src/i18n';
+import type { Accommodation, Citizenship, CompletedKey, Profile, ProgressMap, Situation } from '../src/types';
+
+const profile = (p: Partial<Profile> = {}): Profile => ({
+  situation: 'student',
+  citizenship: 'non-eu',
+  accommodation: 'registered',
+  completed: ['none'],
+  ...p,
+});
+const ids = (p: Profile) => buildChecklist(procedures, p).map((t) => t.procedure.id);
+
+// ---------------------------------------------------------------------------------------------
+describe('checklist: the three required profiles', () => {
+  it('Profile A: non-EU student, accommodation secured, address NOT registered', () => {
+    const tasks = buildChecklist(procedures, profile({ accommodation: 'not-registered' }));
+    const list = tasks.map((t) => t.procedure.id);
+    assert.deepEqual(list, ['university-enrolment', 'address-registration', 'health-insurance', 'residence-permit-student', 'cnp', 'tax-id']);
+    const address = tasks.find((t) => t.procedure.id === 'address-registration')!;
+    assert.equal(address.priority?.level, 'high');
+    assert.equal(address.priority?.reasonKey, 'addressNotRegistered');
+    assert.equal(address.preCompleted, false);
+    assert.ok(!list.includes('eu-registration-certificate'), 'non-EU must not get the EU registration task');
+  });
+
+  it('Profile B: EU student, accommodation secured, address registered', () => {
+    const tasks = buildChecklist(procedures, profile({ citizenship: 'eu', accommodation: 'registered' }));
+    const list = tasks.map((t) => t.procedure.id);
+    assert.deepEqual(list, ['university-enrolment', 'address-registration', 'health-insurance', 'eu-registration-certificate', 'cnp', 'tax-id']);
+    assert.ok(!list.includes('residence-permit-student'), 'EU must not automatically get a non-EU residence permit task');
+    const address = tasks.find((t) => t.procedure.id === 'address-registration')!;
+    assert.equal(address.preCompleted, true);
+    assert.equal(effectiveStatus(address, {}), 'completed');
+  });
+
+  it('Profile C: non-EU student, no accommodation yet', () => {
+    const tasks = buildChecklist(procedures, profile({ accommodation: 'none' }));
+    const byId = Object.fromEntries(tasks.map((t) => [t.procedure.id, t]));
+    assert.ok(byId['address-registration'].notes.includes('findAccommodationFirst'));
+    assert.ok(byId['residence-permit-student'].notes.includes('needsAccommodation'));
+    assert.equal(byId['address-registration'].preCompleted, false);
+  });
+
+  it('A, B and C produce different checklists', () => {
+    const a = ids(profile({ accommodation: 'not-registered' })).join();
+    const b = ids(profile({ citizenship: 'eu' })).join();
+    assert.notEqual(a, b);
+  });
+});
+
+describe('checklist: rules for every combination of answers', () => {
+  const completedOptions: CompletedKey[][] = [['none'], ['unsure'], ['residence'], ['address', 'health'], ['residence', 'address', 'health', 'cnp', 'university']];
+  const combos: Profile[] = [];
+  for (const situation of SITUATIONS) for (const citizenship of CITIZENSHIPS) for (const accommodation of ACCOMMODATIONS) for (const completed of completedOptions)
+    combos.push({ situation, citizenship, accommodation, completed });
+
+  it(`works for all ${combos.length} combinations without errors`, () => {
+    for (const p of combos) {
+      const tasks = buildChecklist(procedures, p);
+      const progress: ProgressMap = {};
+      const s = summarize(tasks, progress);
+      assert.equal(s.total, tasks.length);
+      assert.equal(s.completed + s.remaining, s.total);
+      assert.ok(s.percent >= 0 && s.percent <= 100);
+      assert.equal(new Set(tasks.map((t) => t.procedure.id)).size, tasks.length, 'no duplicate tasks');
+    }
+  });
+
+  it('EU citizens never get the non-EU permit; non-EU never get the EU certificate', () => {
+    for (const p of combos) {
+      const list = ids(p);
+      if (p.citizenship === 'eu') assert.ok(!list.includes('residence-permit-student'));
+      if (p.citizenship === 'non-eu') assert.ok(!list.includes('eu-registration-certificate'));
+    }
+  });
+
+  it('only students get the university task; non-students get "verify" labels and a coverage warning', () => {
+    for (const p of combos) {
+      const tasks = buildChecklist(procedures, p);
+      assert.equal(tasks.some((t) => t.procedure.id === 'university-enrolment'), p.situation === 'student');
+      if (p.situation !== 'student') {
+        assert.ok(hasLimitedCoverage(p));
+        assert.ok(tasks.every((t) => t.relevance === 'verify' && t.notes.includes('verifyApplies')));
+      }
+    }
+  });
+
+  it('CNP and tax number are always labelled "verify whether this applies"', () => {
+    for (const p of combos) {
+      for (const t of buildChecklist(procedures, p).filter((x) => ['cnp', 'tax-id'].includes(x.procedure.id))) {
+        assert.equal(t.relevance, 'verify');
+      }
+    }
+  });
+
+  it('"unsure" accommodation turns the address task into a verify task', () => {
+    const t = buildChecklist(procedures, profile({ accommodation: 'unsure' })).find((x) => x.procedure.id === 'address-registration')!;
+    assert.equal(t.relevance, 'verify');
+    assert.ok(t.notes.includes('accommodationUnsure'));
+  });
+
+  it('onboarding "completed" answers pre-mark the matching tasks', () => {
+    const tasks = buildChecklist(procedures, profile({ accommodation: 'none', completed: ['residence', 'health', 'university', 'cnp'] }));
+    const done = tasks.filter((t) => t.preCompleted).map((t) => t.procedure.id).sort();
+    assert.deepEqual(done, ['cnp', 'health-insurance', 'residence-permit-student', 'university-enrolment']);
+  });
+});
+
+describe('progress tracking', () => {
+  const tasks = buildChecklist(procedures, profile({ accommodation: 'not-registered' }));
+
+  it('starts at 0% and updates as tasks are completed', () => {
+    assert.equal(summarize(tasks, {}).percent, 0);
+    const progress: ProgressMap = { 'university-enrolment': 'completed', 'health-insurance': 'completed', 'cnp': 'in-progress' };
+    const s = summarize(tasks, progress);
+    assert.equal(s.completed, 2);
+    assert.equal(s.inProgress, 1);
+    assert.equal(s.remaining, tasks.length - 2);
+    assert.equal(s.percent, Math.round((2 / tasks.length) * 100));
+  });
+
+  it('a pre-completed task can be reopened and completed again', () => {
+    const b = buildChecklist(procedures, profile({ citizenship: 'eu', accommodation: 'registered' }));
+    const address = b.find((t) => t.procedure.id === 'address-registration')!;
+    assert.equal(effectiveStatus(address, {}), 'completed');
+    assert.equal(effectiveStatus(address, { 'address-registration': 'not-started' }), 'not-started');
+    assert.equal(effectiveStatus(address, { 'address-registration': 'completed' }), 'completed');
+  });
+
+  it('"next up" lists unfinished high-priority tasks first and skips completed ones', () => {
+    const next = nextUp(tasks, { 'university-enrolment': 'completed' }, 3).map((t) => t.procedure.id);
+    assert.ok(!next.includes('university-enrolment'));
+    assert.equal(next[0], 'address-registration'); // high priority (not registered) comes before normal ones
+  });
+
+  it('knows which prerequisites are still open', () => {
+    const permit = tasks.find((t) => t.procedure.id === 'residence-permit-student')!;
+    assert.deepEqual(pendingDependencies(permit, tasks, {}).map((p) => p.id), ['university-enrolment', 'address-registration']);
+    assert.deepEqual(pendingDependencies(permit, tasks, { 'university-enrolment': 'completed', 'address-registration': 'completed' }), []);
+  });
+
+  it('ignores damaged progress data from storage', () => {
+    assert.deepEqual(sanitizeProgress({ a: 'completed', b: 'banana', c: 5 }), { a: 'completed' });
+    assert.deepEqual(sanitizeProgress(null), {});
+    assert.deepEqual(sanitizeProgress('x'), {});
+  });
+});
+
+describe('onboarding rules', () => {
+  it('"None of these" and "I\'m not sure" clear other selections', () => {
+    assert.deepEqual(toggleCompleted(['health', 'cnp'], 'none'), ['none']);
+    assert.deepEqual(toggleCompleted(['health'], 'unsure'), ['unsure']);
+    assert.deepEqual(toggleCompleted(['none'], 'health'), ['health']);
+    assert.deepEqual(toggleCompleted(['unsure'], 'cnp'), ['cnp']);
+    assert.deepEqual(toggleCompleted(['none'], 'none'), []);
+    assert.deepEqual(toggleCompleted(['health'], 'health'), []);
+    assert.deepEqual(toggleCompleted(['health'], 'cnp'), ['health', 'cnp']);
+  });
+
+  it('normalises impossible stored combinations', () => {
+    assert.deepEqual(normaliseCompleted(['health', 'none']), ['none']);
+    assert.deepEqual(normaliseCompleted(['health', 'health']), ['health']);
+  });
+
+  it('rejects empty or incomplete steps', () => {
+    assert.equal(validateStep(1, { completed: [] }), 'onb.error.required');
+    assert.equal(validateStep(1, { situation: 'student', completed: [] }), 'onb.error.required');
+    assert.equal(validateStep(1, { situation: 'student', citizenship: 'eu', completed: [] }), null);
+    assert.equal(validateStep(2, { completed: [] }), null);
+    assert.equal(validateStep(3, { completed: [] }), 'onb.error.required');
+    assert.equal(validateStep(4, { completed: [] }), 'onb.error.completed');
+    assert.equal(validateStep(4, { completed: ['none'] }), null);
+  });
+
+  it('only builds a profile from a complete draft', () => {
+    assert.equal(draftToProfile({ completed: [] }), null);
+    assert.equal(draftToProfile({ situation: 'student', citizenship: 'eu', accommodation: 'none', completed: [] }), null);
+    const p = draftToProfile({ situation: 'student', citizenship: 'eu', accommodation: 'none', completed: ['none'] });
+    assert.ok(p && isProfile(p));
+  });
+
+  it('rejects corrupted data from localStorage', () => {
+    assert.equal(isProfile(null), false);
+    assert.equal(isProfile({ situation: 'astronaut', citizenship: 'eu', accommodation: 'none', completed: [] }), false);
+    assert.equal(isProfile({ situation: 'student', citizenship: 'eu', accommodation: 'none', completed: ['x'] }), false);
+    assert.equal(isDraft({ completed: 'nope' }), false);
+    assert.equal(isDraft({ completed: [] }), true);
+  });
+
+  it('collects no sensitive fields (no passport / CNP / name inputs exist in the profile shape)', () => {
+    const keys = Object.keys(profile());
+    assert.deepEqual(keys.sort(), ['accommodation', 'citizenship', 'completed', 'situation']);
+  });
+});
+
+// ---------------------------------------------------------------------------------------------
+describe('administrative data integrity', () => {
+  const levels = ['verified', 'recommended', 'confirm'];
+  const hasEn = (l: { en?: string } | undefined) => Boolean(l && typeof l.en === 'string' && l.en.length > 0);
+
+  it('has 5-8 procedures with unique ids', () => {
+    assert.ok(procedures.length >= 5 && procedures.length <= 8);
+    assert.equal(new Set(procedures.map((p) => p.id)).size, procedures.length);
+  });
+
+  it('every procedure is complete and refers only to things that exist', () => {
+    for (const p of procedures) {
+      for (const field of ['title', 'summary', 'why', 'whoNeeds', 'whoDoesNot', 'submitWhere'] as const) {
+        assert.ok(hasEn(p[field]), `${p.id}.${field} needs English text`);
+      }
+      assert.ok(p.documents.length > 0 && p.steps.length > 0 && p.warnings.length > 0, `${p.id} lists documents, steps and warnings`);
+      assert.ok(institutions.some((i) => i.id === p.institutionId), `${p.id} institution exists`);
+      assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(p.lastVerified), `${p.id} has a last verified date`);
+      assert.ok(p.audience.length > 0);
+      for (const dep of p.dependsOn ?? []) assert.ok(getProcedure(dep), `${p.id} dependency ${dep} exists`);
+      if (p.completedKey) assert.ok(COMPLETED_KEYS.includes(p.completedKey));
+      const items = [...p.steps, ...p.warnings, ...(p.processingTime ? [p.processingTime] : []), ...(p.deadline ? [p.deadline] : [])];
+      for (const item of items) {
+        assert.ok(hasEn(item.text) && levels.includes(item.level), `${p.id}: item has text and a valid level`);
+        for (const id of item.sourceIds ?? []) assert.ok(sources[id], `${p.id}: unknown source ${id}`);
+      }
+      for (const d of p.documents) {
+        assert.ok(hasEn(d.name) && hasEn(d.whereToGet) && levels.includes(d.level), `${p.id}: document is complete`);
+        for (const id of d.sourceIds ?? []) assert.ok(sources[id], `${p.id}: unknown source ${id}`);
+      }
+      for (const id of p.sourceIds) assert.ok(sources[id], `${p.id}: unknown source ${id}`);
+    }
+  });
+
+  it('"verified" facts always cite an official source', () => {
+    for (const p of procedures) {
+      const items = [...p.steps, ...p.warnings, ...(p.processingTime ? [p.processingTime] : []), ...(p.deadline ? [p.deadline] : []), ...p.documents];
+      for (const item of items.filter((i) => i.level === 'verified')) {
+        assert.ok((item.sourceIds ?? []).length > 0, `${p.id}: a "verified" item has no source`);
+      }
+    }
+  });
+
+  it('titles, summaries and "why" exist in all four languages', () => {
+    for (const p of procedures) for (const lang of LANGUAGES) for (const f of ['title', 'summary', 'why', 'whoNeeds', 'whoDoesNot', 'submitWhere'] as const) {
+      assert.ok(p[f][lang.code], `${p.id}.${f} missing ${lang.code}`);
+    }
+  });
+
+  it('every source has a valid https URL and a retrieval date', () => {
+    for (const [id, s] of Object.entries(sources)) {
+      assert.ok(s.url.startsWith('https://'), `${id} url`);
+      assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(s.retrieved), `${id} date`);
+      assert.doesNotThrow(() => new URL(s.url), `${id} is a parseable URL`);
+    }
+  });
+
+  it('institutions never contain made-up details: unverified fields are null, not empty text', () => {
+    for (const i of institutions) {
+      for (const field of ['address', 'phone', 'email'] as const) assert.ok(i[field] === null || i[field]!.trim().length > 0, `${i.id}.${field}`);
+      assert.ok(i.website.startsWith('https://'));
+      for (const id of i.sourceIds) assert.ok(sources[id], `${i.id}: unknown source ${id}`);
+      for (const lang of LANGUAGES) {
+        assert.ok(i.name[lang.code] && i.description[lang.code] && i.verifiedNote[lang.code], `${i.id} missing ${lang.code}`);
+      }
+    }
+  });
+
+  it('the Romanian phrases have text, meaning in all languages and consistent placeholders', () => {
+    assert.ok(phrases.length >= 7);
+    for (const ph of phrases) {
+      assert.ok(ph.ro.length > 0);
+      for (const lang of LANGUAGES) assert.ok(ph.meaning[lang.code] || lang.code === 'ro', `${ph.id} meaning ${lang.code}`);
+      for (const lang of LANGUAGES) assert.ok(ph.label[lang.code], `${ph.id} label ${lang.code}`);
+      const count = (s: string) => (s.match(/\[[^\]]+\]/g) ?? []).length;
+      for (const lang of ['en', 'fr', 'ar'] as const) assert.equal(count(ph.meaning[lang]!), count(ph.ro), `${ph.id}: placeholders match in ${lang}`);
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------------------------
+describe('translations', () => {
+  const enKeys = Object.keys(dictionaries.en).sort();
+
+  it('all four languages define exactly the same keys', () => {
+    for (const lang of LANGUAGES) assert.deepEqual(Object.keys(dictionaries[lang.code]).sort(), enKeys, lang.code);
+  });
+
+  it('no translation is empty and {placeholders} match English', () => {
+    const placeholders = (s: string) => (s.match(/\{\w+\}/g) ?? []).sort().join();
+    for (const lang of LANGUAGES) for (const key of enKeys as MessageKey[]) {
+      const value = dictionaries[lang.code][key];
+      assert.ok(value && value.trim().length > 0, `${lang.code}:${key} is empty`);
+      assert.equal(placeholders(value), placeholders(dictionaries.en[key]), `${lang.code}:${key} placeholders differ`);
+    }
+  });
+
+  it('Arabic text is actually Arabic and Romanian has diacritics', () => {
+    assert.ok(/[؀-ۿ]/.test(dictionaries.ar['landing.cta']));
+    assert.ok(/[ăâîșț]/i.test(dictionaries.ro['common.back'] + dictionaries.ro['nav.institutions']));
+  });
+
+  it('every interface key used in the source code exists', () => {
+    const files: string[] = [];
+    const walk = (dir: string) => {
+      for (const name of readdirSync(dir)) {
+        const full = join(dir, name);
+        if (statSync(full).isDirectory()) walk(full);
+        else if (/\.(ts|tsx)$/.test(name) && !full.includes(join('src', 'i18n'))) files.push(full);
+      }
+    };
+    walk('src');
+    const used = new Set<string>();
+    const dynamicPrefixes = new Set<string>();
+    for (const f of files) {
+      const code = readFileSync(f, 'utf8');
+      for (const m of code.matchAll(/\bt\(\s*'([\w.\-]+)'/g)) used.add(m[1]);
+      for (const m of code.matchAll(/\bt\(\s*`([\w.\-]+)\$\{/g)) dynamicPrefixes.add(m[1]);
+    }
+    const missing = [...used].filter((k) => !(k in dictionaries.en));
+    assert.deepEqual(missing, [], `keys used in code but missing from en.ts: ${missing.join(', ')}`);
+    // dynamic keys: make sure every value we can build exists
+    const values: Record<string, string[]> = {
+      'onb.situation.': SITUATIONS, 'onb.citizenship.': CITIZENSHIPS, 'onb.accommodation.': ACCOMMODATIONS,
+      'onb.completed.': COMPLETED_KEYS, 'status.': ['not-started', 'in-progress', 'completed'],
+      'level.': ['verified', 'recommended', 'confirm'], 'note.': ['findAccommodationFirst', 'accommodationUnsure', 'needsAccommodation', 'preCompleted', 'addressNotRegistered'],
+      'guide.sourceKind.': ['government', 'university', 'eu'], 'priority.': ['high', 'low'], 'ai.ex.': ['1', '2', '3', '4', '5'],
+      'check.filter.': ['all', 'todo', 'progress', 'done'], 'guide.s': ['1', '2', '3', '4', '6', '7', '8', '9', '10'],
+    };
+    for (const prefix of dynamicPrefixes) {
+      assert.ok(values[prefix], `dynamic key prefix "${prefix}" is not covered by this test; add it`);
+      for (const v of values[prefix]) assert.ok(`${prefix}${v}` in dictionaries.en, `missing key ${prefix}${v}`);
+    }
+  });
+
+  it('translate() fills placeholders and localize() falls back to English', () => {
+    assert.equal(translate('en', 'common.step', { current: 2, total: 4 }), 'Step 2 of 4');
+    assert.equal(translate('fr', 'common.step', { current: 2, total: 4 }), 'Étape 2 sur 4');
+    assert.deepEqual(localize({ en: 'Hello' }, 'ar'), { text: 'Hello', fallback: true });
+    assert.deepEqual(localize({ en: 'Hello', ar: 'مرحبا' }, 'ar'), { text: 'مرحبا', fallback: false });
+    assert.deepEqual(localize({ en: 'Hello' }, 'en'), { text: 'Hello', fallback: false });
+  });
+});
+
+// ---------------------------------------------------------------------------------------------
+describe('AI response parsing', () => {
+  it('reads JSON even with extra text around it', () => {
+    const r = parsePhraseReply('Here you go:\n{"romanian":"Bună ziua!","translation":"Hello","pronunciation":"BOO-nuh ZEE-wah"}\nBye');
+    assert.deepEqual(r, { romanian: 'Bună ziua!', translation: 'Hello', pronunciation: 'BOO-nuh ZEE-wah' });
+  });
+  it('rejects replies without a Romanian message', () => {
+    assert.equal(parsePhraseReply('no json here'), null);
+    assert.equal(parsePhraseReply('{"romanian":""}'), null);
+    assert.equal(parsePhraseReply('{broken'), null);
+  });
+});
+
+describe('AI endpoint (api/chat.ts) with a fake network', () => {
+  const realFetch = globalThis.fetch;
+  const original = { key: process.env.ANTHROPIC_API_KEY, model: process.env.AI_MODEL };
+  for (const name of ['GEMINI_API_KEY', 'GROQ_API_KEY', 'AI_PROVIDER']) delete process.env[name];
+  const restore = () => {
+    globalThis.fetch = realFetch;
+    if (original.key === undefined) delete process.env.ANTHROPIC_API_KEY; else process.env.ANTHROPIC_API_KEY = original.key;
+    if (original.model === undefined) delete process.env.AI_MODEL; else process.env.AI_MODEL = original.model;
+  };
+  const post = (body: unknown) => new Request('http://localhost/api/chat', { method: 'POST', body: typeof body === 'string' ? body : JSON.stringify(body) });
+  const goodBody = { mode: 'chat', language: 'ro', messages: [{ role: 'user', content: 'Ce este CNP?' }] };
+
+  it('without a key: GET says not configured, POST returns 503 and never calls the network', async () => {
+    delete process.env.ANTHROPIC_API_KEY;
+    let calls = 0;
+    globalThis.fetch = (async () => { calls += 1; throw new Error('should not be called'); }) as typeof fetch;
+    try {
+      const { GET, POST } = await import('../api/chat');
+      assert.deepEqual(await GET().json(), { configured: false });
+      const res = await POST(post(goodBody));
+      assert.equal(res.status, 503);
+      assert.deepEqual(await res.json(), { error: 'not_configured' });
+      assert.equal(calls, 0);
+    } finally { restore(); }
+  });
+
+  it('rejects malformed requests before calling the provider', async () => {
+    process.env.ANTHROPIC_API_KEY = 'test-key';
+    let calls = 0;
+    globalThis.fetch = (async () => { calls += 1; return new Response('{}'); }) as typeof fetch;
+    try {
+      const { POST } = await import('../api/chat');
+      const bad: unknown[] = [
+        'not json',
+        { ...goodBody, language: 'xx' },
+        { ...goodBody, messages: [] },
+        { ...goodBody, messages: [{ role: 'system', content: 'x' }] },
+        { ...goodBody, messages: [{ role: 'assistant', content: 'x' }] },
+        { ...goodBody, messages: [{ role: 'user', content: 'x'.repeat(2001) }] },
+        { ...goodBody, messages: Array.from({ length: 21 }, () => ({ role: 'user', content: 'hi' })) },
+      ];
+      for (const b of bad) assert.equal((await POST(post(b))).status, 400, JSON.stringify(b).slice(0, 60));
+      assert.equal(calls, 0);
+    } finally { restore(); }
+  });
+
+  it('sends the dataset + rules to the provider, keeps the key in a header, and returns the reply', async () => {
+    process.env.ANTHROPIC_API_KEY = 'test-key';
+    type Seen = { url: string; headers: Record<string, string>; body: { system: string; model: string; messages: unknown[] } };
+    const box: { seen: Seen | null } = { seen: null };
+    globalThis.fetch = (async (url: string, init: RequestInit) => {
+      box.seen = { url, headers: init.headers as Record<string, string>, body: JSON.parse(init.body as string) };
+      return new Response(JSON.stringify({ content: [{ type: 'text', text: 'CNP înseamnă cod numeric personal.' }] }), { status: 200 });
+    }) as unknown as typeof fetch;
+    try {
+      const { POST } = await import('../api/chat');
+      const res = await POST(post({ ...goodBody, procedureId: 'cnp' }));
+      assert.equal(res.status, 200);
+      assert.deepEqual(await res.json(), { reply: 'CNP înseamnă cod numeric personal.' });
+      assert.ok(box.seen);
+      const s = box.seen as Seen;
+      assert.equal(s.url, 'https://api.anthropic.com/v1/messages');
+      assert.equal(s.headers['x-api-key'], 'test-key');
+      assert.ok(s.body.system.includes('Reply in Romanian'));
+      assert.ok(s.body.system.includes('Residence permit for studies'), 'dataset is included');
+      assert.ok(s.body.system.includes('Str. Andrei Mocioni nr. 8-10'), 'verified institution data is included');
+      assert.ok(s.body.system.includes('Personal numeric code (CNP)'), 'focus procedure is mentioned');
+      assert.ok(!JSON.stringify(s.body).includes('test-key'), 'the key is never placed in the prompt');
+    } finally { restore(); }
+  });
+
+  it('maps provider failures to safe error codes', async () => {
+    process.env.ANTHROPIC_API_KEY = 'test-key';
+    try {
+      const { POST } = await import('../api/chat');
+      globalThis.fetch = (async () => new Response('{}', { status: 429 })) as typeof fetch;
+      assert.equal((await POST(post(goodBody))).status, 429);
+      globalThis.fetch = (async () => new Response('secret upstream details', { status: 500 })) as typeof fetch;
+      const res = await POST(post(goodBody));
+      assert.equal(res.status, 502);
+      assert.ok(!(await res.text()).includes('secret'));
+      globalThis.fetch = (async () => { const e = new Error('t'); e.name = 'TimeoutError'; throw e; }) as typeof fetch;
+      assert.equal((await POST(post(goodBody))).status, 504);
+      globalThis.fetch = (async () => new Response(JSON.stringify({ content: [] }), { status: 200 })) as typeof fetch;
+      assert.equal((await POST(post(goodBody))).status, 502);
+    } finally { restore(); }
+  });
+
+  it('phrase mode asks for JSON and limits output', async () => {
+    process.env.ANTHROPIC_API_KEY = 'test-key';
+    let body: { system: string; max_tokens: number } | null = null;
+    globalThis.fetch = (async (_u: string, init: RequestInit) => {
+      body = JSON.parse(init.body as string);
+      return new Response(JSON.stringify({ content: [{ type: 'text', text: '{"romanian":"Bună ziua","translation":"Hello","pronunciation":""}' }] }), { status: 200 });
+    }) as unknown as typeof fetch;
+    try {
+      const { POST } = await import('../api/chat');
+      const res = await POST(post({ mode: 'phrase', language: 'fr', messages: [{ role: 'user', content: 'I want to ask about my appointment' }] }));
+      assert.equal(res.status, 200);
+      const b = body as unknown as { system: string; max_tokens: number };
+      assert.ok(b.system.includes('Reply with JSON only'));
+      assert.equal(b.max_tokens, 400);
+    } finally { restore(); }
+  });
+});
+
+// ---------------------------------------------------------------------------------------------
+describe('plan: dates', () => {
+  it('accepts only real calendar dates', () => {
+    assert.ok(isIsoDate('2026-11-14'));
+    assert.ok(isIsoDate('2028-02-29'), 'leap day');
+    for (const bad of ['2027-02-29', '2026-13-01', '2026-00-10', '2026-11-31', '14-11-2026', '', '1999-12-31', '2101-01-01', 'abc', null, 20261114])
+      assert.ok(!isIsoDate(bad), `should reject ${String(bad)}`);
+  });
+
+  it('adds days across month, year and leap-year boundaries without time-zone drift', () => {
+    assert.equal(addDays('2026-11-14', 30), '2026-12-14');
+    assert.equal(addDays('2026-12-31', 1), '2027-01-01');
+    assert.equal(addDays('2028-02-28', 1), '2028-02-29');
+    assert.equal(addDays('2026-03-29', 1), '2026-03-30');
+    assert.equal(addDays('2026-10-25', 1), '2026-10-26'); // Romanian clock change weekend
+    assert.equal(daysBetween('2026-10-24', '2026-10-27'), 3);
+    assert.equal(daysBetween('2026-11-14', '2026-11-10'), -4);
+  });
+
+  it('validates arrival and expiry', () => {
+    assert.deepEqual(validateDates({ arrival: '', expiry: '' }), { arrival: 'required' });
+    assert.deepEqual(validateDates({ arrival: '2026-13-01', expiry: '' }), { arrival: 'invalid' });
+    assert.deepEqual(validateDates({ arrival: '2026-10-01', expiry: '' }), {});
+    assert.deepEqual(validateDates({ arrival: '2026-10-01', expiry: '2026-09-30' }), { expiry: 'beforeArrival' });
+    assert.deepEqual(validateDates({ arrival: '2026-10-01', expiry: 'nonsense' }), { expiry: 'invalid' });
+    assert.deepEqual(validateDates({ arrival: '2026-10-01', expiry: '2026-10-01' }), {}, 'same day is allowed');
+  });
+
+  it('sanitises hand-edited storage', () => {
+    assert.deepEqual(sanitizeDates(null), { arrival: '', expiry: '' });
+    assert.deepEqual(sanitizeDates({ arrival: '2026-10-01', expiry: 5 }), { arrival: '2026-10-01', expiry: '' });
+    assert.deepEqual(sanitizeDates('x'), { arrival: '', expiry: '' });
+  });
+
+  it('formats dates in each language without crashing', () => {
+    for (const l of ['en', 'ro', 'fr', 'ar']) assert.ok(formatDate('2026-11-14', l).length > 5);
+    assert.equal(formatDate('garbage', 'en'), 'garbage');
+    assert.ok(formatDate('2026-11-14', 'en').includes('14'));
+  });
+});
+
+describe('plan: schedule', () => {
+  const tasksA = buildChecklist(procedures, profile({ accommodation: 'not-registered' }));
+  const today = '2026-11-14';
+
+  it('returns nothing without a valid arrival date', () => {
+    assert.deepEqual(buildPlan(tasksA, {}, { arrival: '', expiry: '' }, today), []);
+    assert.deepEqual(buildPlan(tasksA, {}, { arrival: '2026-02-30', expiry: '' }, today), []);
+  });
+
+  it('puts every task on a date after arrival, in date order', () => {
+    const plan = buildPlan(tasksA, {}, { arrival: '2026-11-01', expiry: '' }, today);
+    assert.equal(plan.length, tasksA.length);
+    assert.ok(plan.every((i) => i.date >= '2026-11-01'));
+    assert.deepEqual(plan.map((i) => i.date), [...plan.map((i) => i.date)].sort());
+    assert.equal(plan[0].task.procedure.id, 'university-enrolment');
+  });
+
+  it('flags open tasks past their suggested date but never completed ones', () => {
+    const progress: ProgressMap = { 'university-enrolment': 'completed' };
+    const plan = buildPlan(tasksA, progress, { arrival: '2026-10-01', expiry: '' }, today);
+    const uni = plan.find((i) => i.task.procedure.id === 'university-enrolment')!;
+    const addr = plan.find((i) => i.task.procedure.id === 'address-registration')!;
+    assert.equal(uni.pastDue, false);
+    assert.equal(addr.pastDue, true);
+    assert.ok(addr.daysLeft < 0);
+  });
+
+  it('pulls the residence-permit date earlier when the expiry date is close (30-day rule, unconfirmed)', () => {
+    const expiry = '2026-12-10';
+    const plan = buildPlan(tasksA, {}, { arrival: '2026-11-01', expiry }, today);
+    const permit = plan.find((i) => i.task.procedure.id === 'residence-permit-student')!;
+    assert.equal(permit.latestBy, '2026-11-10');
+    assert.equal(permit.date, '2026-11-10');
+    assert.equal(permit.basis, 'expiry');
+    assert.equal(permit.pastDue, true);
+  });
+
+  it('keeps the usual date when the expiry is far away, but still shows the latest day', () => {
+    const plan = buildPlan(tasksA, {}, { arrival: '2026-11-01', expiry: '2027-09-30' }, today);
+    const permit = plan.find((i) => i.task.procedure.id === 'residence-permit-student')!;
+    assert.equal(permit.basis, 'suggested');
+    assert.equal(permit.date, '2026-11-22');
+    assert.equal(permit.latestBy, '2027-08-31');
+  });
+
+  it('gives only the permit task a latest-day, and none without an expiry date', () => {
+    const noExpiry = buildPlan(tasksA, {}, { arrival: '2026-11-01', expiry: '' }, today);
+    assert.ok(noExpiry.every((i) => i.latestBy === undefined));
+    const withExpiry = buildPlan(tasksA, {}, { arrival: '2026-11-01', expiry: '2027-09-30' }, today);
+    assert.deepEqual(withExpiry.filter((i) => i.latestBy).map((i) => i.task.procedure.id), ['residence-permit-student']);
+  });
+
+  it('EU checklist plans the registration certificate and no permit', () => {
+    const eu = buildChecklist(procedures, profile({ citizenship: 'eu' }));
+    const plan = buildPlan(eu, {}, { arrival: '2026-11-01', expiry: '2027-09-30' }, today);
+    assert.ok(plan.some((i) => i.task.procedure.id === 'eu-registration-certificate'));
+    assert.ok(plan.every((i) => i.latestBy === undefined));
+  });
+});
+
+describe('plan: calendar file (.ics)', () => {
+  const now = new Date('2026-11-14T08:00:00Z');
+  const ics = buildIcs(
+    [
+      { uid: 'a@welcomero', date: '2026-12-31', summary: 'welcomeRo: Permit, with comma; and semicolon', description: 'Line one\nLine two with a very long sentence that must be folded because calendar files limit the length of every line to seventy-five characters.' },
+    ],
+    now,
+  );
+
+  it('is a well-formed calendar with CRLF line endings', () => {
+    assert.ok(ics.startsWith('BEGIN:VCALENDAR\r\n'));
+    assert.ok(ics.endsWith('END:VCALENDAR\r\n'));
+    assert.ok(!/[^\r]\n/.test(ics), 'every newline must be CRLF');
+    assert.equal((ics.match(/BEGIN:VEVENT/g) ?? []).length, 1);
+    assert.equal((ics.match(/END:VEVENT/g) ?? []).length, 1);
+  });
+
+  it('writes all-day dates (end is the next day, across the year boundary)', () => {
+    assert.ok(ics.includes('DTSTART;VALUE=DATE:20261231'));
+    assert.ok(ics.includes('DTEND;VALUE=DATE:20270101'));
+    assert.ok(ics.includes('DTSTAMP:20261114T080000Z'));
+  });
+
+  it('escapes commas, semicolons and newlines, and folds long lines', () => {
+    assert.ok(ics.includes('Permit\\, with comma\\; and semicolon'));
+    assert.ok(ics.includes('Line one\\nLine two'));
+    for (const line of ics.split('\r\n')) assert.ok(Array.from(line).length <= 75, `line too long: ${line.length}`);
+  });
+
+  it('an empty list still gives a valid, empty calendar', () => {
+    const empty = buildIcs([], now);
+    assert.ok(empty.includes('BEGIN:VCALENDAR') && !empty.includes('VEVENT'));
+  });
+});
+
+describe('document checklist', () => {
+  const permit = getProcedure('residence-permit-student')!;
+  const name = permit.documents[0].name.en;
+
+  it('ticks and unticks one document without touching others', () => {
+    let map = toggleDoc({}, permit.id, name);
+    assert.deepEqual(map[permit.id], [name]);
+    assert.deepEqual(docCounts(permit, map), { ready: 1, total: permit.documents.length });
+    map = toggleDoc(map, permit.id, name);
+    assert.deepEqual(docCounts(permit, map), { ready: 0, total: permit.documents.length });
+    const other = toggleDoc({}, 'cnp', 'x');
+    assert.deepEqual(docCounts(permit, other), { ready: 0, total: permit.documents.length });
+  });
+
+  it('ignores stale ticks for documents that no longer exist', () => {
+    assert.deepEqual(docCounts(permit, { [permit.id]: ['A document that was removed'] }).ready, 0);
+  });
+
+  it('survives corrupted storage', () => {
+    assert.deepEqual(sanitizeDocs(null), {});
+    assert.deepEqual(sanitizeDocs([1, 2]), {});
+    assert.deepEqual(sanitizeDocs({ a: 'nope', b: ['x', 5, 'y'] }), { b: ['x', 'y'] });
+  });
+
+  it('does not mutate the previous state', () => {
+    const before = { [permit.id]: [name] };
+    toggleDoc(before, permit.id, name);
+    assert.deepEqual(before, { [permit.id]: [name] });
+  });
+});
+
+describe('appointment kit data and speech text', () => {
+  it('every kit question has Romanian text, a pronunciation and meanings in en/fr/ar', () => {
+    assert.ok(kitQuestions.length >= 4);
+    for (const q of kitQuestions) {
+      assert.ok(q.ro.endsWith('?') && q.pron, q.id);
+      for (const l of ['en', 'fr', 'ar'] as const) assert.ok(q.meaning[l], `${q.id} ${l}`);
+    }
+    assert.equal(new Set(kitQuestions.map((q) => q.id)).size, kitQuestions.length);
+  });
+
+  it('every procedure has a Romanian title for the kit', () => {
+    for (const p of procedures) assert.ok(p.title.ro, p.id);
+  });
+
+  it('speech skips [placeholders] instead of reading brackets aloud', () => {
+    assert.equal(speakableText('Mă numesc [numele tău].'), 'Mă numesc , .');
+    assert.ok(!speakableText('Buna [x] ziua [y]').includes('['));
+  });
+});
+
+describe('AI providers: Gemini and Groq (free tiers) with a fake network', () => {
+  const realFetch = globalThis.fetch;
+  const names = ['ANTHROPIC_API_KEY', 'GEMINI_API_KEY', 'GROQ_API_KEY', 'AI_PROVIDER', 'AI_MODEL'] as const;
+  const saved: Record<string, string | undefined> = {};
+  const setup = (env: Partial<Record<(typeof names)[number], string>>) => {
+    for (const n of names) { saved[n] = process.env[n]; delete process.env[n]; }
+    Object.assign(process.env, env);
+  };
+  const restore = () => {
+    globalThis.fetch = realFetch;
+    for (const n of names) { if (saved[n] === undefined) delete process.env[n]; else process.env[n] = saved[n]; }
+  };
+  const post = (body: unknown) => new Request('http://localhost/api/chat', { method: 'POST', body: JSON.stringify(body) });
+  const goodBody = { mode: 'chat', language: 'en', messages: [{ role: 'user', content: 'What is the CNP?' }, { role: 'assistant', content: 'Earlier answer' }, { role: 'user', content: 'And the tax number?' }] };
+  type Seen = { url: string; headers: Record<string, string>; raw: string; body: Record<string, any> };
+  const capture = (reply: unknown, status = 200) => {
+    const box: { seen: Seen | null } = { seen: null };
+    globalThis.fetch = (async (url: string, init: RequestInit) => {
+      box.seen = { url: String(url), headers: init.headers as Record<string, string>, raw: init.body as string, body: JSON.parse(init.body as string) };
+      return new Response(JSON.stringify(reply), { status });
+    }) as unknown as typeof fetch;
+    return box;
+  };
+
+  it('Gemini: calls generateContent with the key in a header (not the URL) and maps roles and system prompt', async () => {
+    setup({ GEMINI_API_KEY: 'g-secret' });
+    const box = capture({ candidates: [{ content: { parts: [{ text: 'The CNP is ' }, { text: 'a personal code.' }] } }] });
+    try {
+      const { GET, POST } = await import('../api/chat');
+      assert.deepEqual(await GET().json(), { configured: true });
+      const res = await POST(post(goodBody));
+      assert.equal(res.status, 200);
+      assert.deepEqual(await res.json(), { reply: 'The CNP is a personal code.' });
+      const s = box.seen as Seen;
+      assert.equal(s.url, 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent');
+      assert.ok(!s.url.includes('g-secret'), 'key must not be in the URL');
+      assert.equal(s.headers['x-goog-api-key'], 'g-secret');
+      assert.ok(!s.raw.includes('g-secret'), 'key must not be in the body');
+      assert.deepEqual(s.body.contents.map((c: any) => c.role), ['user', 'model', 'user']);
+      assert.ok(s.body.systemInstruction.parts[0].text.includes('Residence permit for studies'));
+      assert.deepEqual(s.body.generationConfig.thinkingConfig, { thinkingBudget: 0 });
+      assert.ok(s.body.generationConfig.maxOutputTokens > 0);
+    } finally { restore(); }
+  });
+
+  it('Gemini: ignores "thought" parts, honours AI_MODEL, and skips the thinking switch for other models', async () => {
+    setup({ GEMINI_API_KEY: 'g', AI_MODEL: 'gemini-3.5-flash' });
+    const box = capture({ candidates: [{ content: { parts: [{ text: 'internal reasoning', thought: true }, { text: 'Final answer.' }] } }] });
+    try {
+      const { POST } = await import('../api/chat');
+      const res = await POST(post(goodBody));
+      assert.deepEqual(await res.json(), { reply: 'Final answer.' });
+      const s = box.seen as Seen;
+      assert.ok(s.url.includes('/models/gemini-3.5-flash:generateContent'));
+      assert.equal(s.body.generationConfig.thinkingConfig, undefined);
+    } finally { restore(); }
+  });
+
+  it('Gemini: empty/blocked answers, rate limits and server errors map to safe codes', async () => {
+    setup({ GEMINI_API_KEY: 'g' });
+    try {
+      const { POST } = await import('../api/chat');
+      capture({ candidates: [], promptFeedback: { blockReason: 'SAFETY' } });
+      assert.equal((await POST(post(goodBody))).status, 502);
+      capture({}, 429);
+      assert.equal((await POST(post(goodBody))).status, 429);
+      globalThis.fetch = (async () => new Response('<html>oops</html>', { status: 200 })) as typeof fetch;
+      assert.equal((await POST(post(goodBody))).status, 502, 'non-JSON body');
+      capture({ error: { message: 'API key not valid. g' } }, 400);
+      const res = await POST(post(goodBody));
+      assert.equal(res.status, 502);
+      assert.ok(!(await res.text()).includes('API key not valid'), 'upstream error text is not leaked');
+    } finally { restore(); }
+  });
+
+  it('Groq: OpenAI-style request with a Bearer key and the system prompt first', async () => {
+    setup({ GROQ_API_KEY: 'q-secret' });
+    const box = capture({ choices: [{ message: { content: 'Use the guide.' } }] });
+    try {
+      const { POST } = await import('../api/chat');
+      const res = await POST(post(goodBody));
+      assert.deepEqual(await res.json(), { reply: 'Use the guide.' });
+      const s = box.seen as Seen;
+      assert.equal(s.url, 'https://api.groq.com/openai/v1/chat/completions');
+      assert.equal(s.headers.authorization, 'Bearer q-secret');
+      assert.ok(!s.raw.includes('q-secret'));
+      assert.equal(s.body.model, 'openai/gpt-oss-120b');
+      assert.equal(s.body.messages[0].role, 'system');
+      assert.deepEqual(s.body.messages.slice(1).map((m: any) => m.role), ['user', 'assistant', 'user']);
+      assert.equal(s.body.reasoning_effort, 'low');
+      assert.ok(s.body.max_completion_tokens > 0);
+    } finally { restore(); }
+  });
+
+  it('Groq: empty content and rate limit map to safe codes; other models skip reasoning_effort', async () => {
+    setup({ GROQ_API_KEY: 'q', AI_MODEL: 'llama-3.3-70b-versatile' });
+    try {
+      const { POST } = await import('../api/chat');
+      const box = capture({ choices: [{ message: { content: null } }] });
+      assert.equal((await POST(post(goodBody))).status, 502);
+      assert.equal((box.seen as Seen).body.reasoning_effort, undefined);
+      capture({}, 429);
+      assert.equal((await POST(post(goodBody))).status, 429);
+    } finally { restore(); }
+  });
+
+  it('provider choice: free options win automatically, AI_PROVIDER overrides, no key means unavailable', async () => {
+    try {
+      const { getProvider } = await import('../api/_lib/provider');
+      setup({});
+      assert.equal(getProvider().isConfigured(), false);
+      setup({ ANTHROPIC_API_KEY: 'a' });
+      assert.equal(getProvider().name, 'anthropic');
+      setup({ ANTHROPIC_API_KEY: 'a', GROQ_API_KEY: 'q' });
+      assert.equal(getProvider().name, 'groq');
+      setup({ ANTHROPIC_API_KEY: 'a', GROQ_API_KEY: 'q', GEMINI_API_KEY: 'g' });
+      assert.equal(getProvider().name, 'gemini');
+      setup({ ANTHROPIC_API_KEY: 'a', GROQ_API_KEY: 'q', GEMINI_API_KEY: 'g', AI_PROVIDER: 'Groq' });
+      assert.equal(getProvider().name, 'groq');
+      setup({ GROQ_API_KEY: 'q', AI_PROVIDER: 'nonsense' });
+      assert.equal(getProvider().name, 'groq', 'unknown AI_PROVIDER falls back to auto-detection');
+      setup({ AI_PROVIDER: 'gemini' });
+      assert.equal(getProvider().isConfigured(), false, 'chosen provider without a key is "not available"');
+    } finally { restore(); }
+  });
+});

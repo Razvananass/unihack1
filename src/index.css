@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* Brand colours. Text colours were chosen for WCAG AA contrast on white. */
+@theme {
+  --color-brand-50: #eef6fb;
+  --color-brand-100: #d6e9f5;
+  --color-brand-200: #aed3ea;
+  --color-brand-500: #2a85b8;
+  --color-brand-600: #136e9f;
+  --color-brand-700: #0b5a86;
+  --color-brand-800: #0a4668;
+  --color-brand-900: #0a3350;
+  --color-sun-100: #fff6cc;
+  --color-sun-400: #fcd116;
+  --color-sun-600: #9a7400;
+  --color-ink: #17212b;
+  --color-muted: #4b5a68;
+  --font-sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, "Noto Sans", "Noto Sans Arabic", Tahoma, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #f6f9fb;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Arabic reads better with slightly more line height. */
+html[lang="ar"] body {
+  line-height: 1.8;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---- Motion. Short and calm; switched off for people who ask for reduced motion. ---- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.035); }
+  100% { transform: scale(1); }
+}
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+.animate-fade-up { animation: fade-up 0.35s ease-out both; }
+.animate-pop { animation: pop 0.45s ease-out; }
+.stagger > * { animation: fade-up 0.4s ease-out both; }
+.stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.stagger > *:nth-child(4) { animation-delay: 0.18s; }
+.stagger > *:nth-child(5) { animation-delay: 0.24s; }
+.stagger > *:nth-child(n + 6) { animation-delay: 0.3s; }
+.skeleton {
+  border-radius: 0.75rem;
+  background: linear-gradient(90deg, #e4ecf1 25%, #f3f7f9 50%, #e4ecf1 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+.card-lift { transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease; }
+.card-lift:hover { transform: translateY(-2px); box-shadow: 0 8px 24px -12px rgb(10 51 80 / 0.35); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .card-lift:hover { transform: none; }
+}
+
+/* ---- Printing (appointment kit): plain black on white, no app chrome. ---- */
+@media print {
+  body { background: #fff !important; }
+  .no-print { display: none !important; }
+  a { color: inherit !important; text-decoration: none !important; }
+  .print-card { break-inside: avoid; box-shadow: none !important; }
+}

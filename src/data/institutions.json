@@ -1,0 +1,194 @@
+[
+  {
+    "id": "igi-timis",
+    "name": {
+      "en": "General Inspectorate for Immigration (IGI), Timiș county office",
+      "ro": "Inspectoratul General pentru Imigrări (IGI), Serviciul pentru Imigrări Timiș",
+      "fr": "Inspection générale de l’immigration (IGI), bureau du département de Timiș",
+      "ar": "المفتشية العامة للهجرة (IGI)، مكتب مقاطعة تيميش"
+    },
+    "description": {
+      "en": "The immigration authority. It handles residence permits and registration certificates.",
+      "ro": "Autoritatea pentru imigrări. Se ocupă de permisele de ședere și de certificatele de înregistrare.",
+      "fr": "L’autorité de l’immigration. Elle traite les titres de séjour et les certificats d’enregistrement.",
+      "ar": "سلطة الهجرة. تتولى تصاريح الإقامة وشهادات التسجيل."
+    },
+    "services": [
+      { "en": "Residence permits for studies (non-EU)", "ro": "Permise de ședere pentru studii (non-UE)", "fr": "Titres de séjour pour études (hors UE)", "ar": "تصاريح الإقامة للدراسة (من خارج الاتحاد الأوروبي)" },
+      { "en": "Registration certificates (EU/EEA/Swiss)", "ro": "Certificate de înregistrare (UE/SEE/Elveția)", "fr": "Certificats d’enregistrement (UE/EEE/Suisse)", "ar": "شهادات التسجيل (الاتحاد الأوروبي/المنطقة الاقتصادية الأوروبية/سويسرا)" },
+      { "en": "Questions about your permit file", "ro": "Întrebări despre dosarul tău de ședere", "fr": "Questions sur votre dossier de séjour", "ar": "أسئلة حول ملف إقامتك" }
+    ],
+    "address": "Str. Andrei Mocioni nr. 8-10, Timișoara",
+    "phone": "0256.402430",
+    "email": null,
+    "website": "https://igi.mai.gov.ro/",
+    "hours": null,
+    "verifiedNote": {
+      "en": "Address and phone are from an IGI web page dated 14 May 2024. Opening hours and email were not verified. Check the IGI contact page before you travel.",
+      "ro": "Adresa și telefonul provin dintr-o pagină IGI din 14 mai 2024. Programul și e-mailul nu au fost verificate. Verifică pagina de contact IGI înainte să mergi.",
+      "fr": "L’adresse et le téléphone proviennent d’une page de l’IGI datée du 14 mai 2024. Les horaires et l’e-mail n’ont pas été vérifiés. Consultez la page de contact de l’IGI avant de vous déplacer.",
+      "ar": "العنوان والهاتف من صفحة لـ IGI بتاريخ 14 مايو 2024. لم يتم التحقق من ساعات العمل والبريد الإلكتروني. راجع صفحة اتصال IGI قبل الذهاب."
+    },
+    "sourceIds": ["igi-timis-page", "igi-contact", "igi-home"]
+  },
+  {
+    "id": "upt-iso",
+    "name": {
+      "en": "Politehnica University Timișoara (UPT): International Students Office",
+      "ro": "Universitatea Politehnica Timișoara (UPT): Biroul Studenți Internaționali",
+      "fr": "Université Polytechnique de Timișoara (UPT) : Bureau des étudiants internationaux",
+      "ar": "جامعة بوليتهنيكا تيميشوارا (UPT): مكتب الطلاب الدوليين"
+    },
+    "description": {
+      "en": "The university office that supports incoming international students.",
+      "ro": "Biroul universității care sprijină studenții internaționali care sosesc.",
+      "fr": "Le bureau de l’université qui accompagne les étudiants internationaux à leur arrivée.",
+      "ar": "مكتب الجامعة الذي يدعم الطلاب الدوليين القادمين."
+    },
+    "services": [
+      { "en": "Contact with the immigration services about students’ files", "ro": "Legătura cu serviciile de imigrări pentru dosarele studenților", "fr": "Liaison avec les services d’immigration pour les dossiers des étudiants", "ar": "التواصل مع دوائر الهجرة بشأن ملفات الطلاب" },
+      { "en": "Help with accommodation", "ro": "Ajutor pentru cazare", "fr": "Aide pour le logement", "ar": "المساعدة في السكن" },
+      { "en": "Help with health insurance", "ro": "Ajutor pentru asigurarea de sănătate", "fr": "Aide pour l’assurance maladie", "ar": "المساعدة في التأمين الصحي" }
+    ],
+    "address": "UPT Rectorate, Piața Victoriei nr. 2, 300006 Timișoara (office 107)",
+    "phone": "+40-256-403187",
+    "email": "anca.dubei@upt.ro",
+    "website": "https://international.upt.ro/en/",
+    "hours": null,
+    "verifiedNote": {
+      "en": "Details are from the office’s official web page. Opening hours were not listed. More staff emails are on that page.",
+      "ro": "Detaliile provin de pe pagina oficială a biroului. Programul nu era menționat. Pe pagină sunt și alte adrese de e-mail ale personalului.",
+      "fr": "Les informations viennent de la page officielle du bureau. Les horaires n’y figuraient pas. D’autres e-mails du personnel sont sur cette page.",
+      "ar": "التفاصيل من الصفحة الرسمية للمكتب. لم تُذكر ساعات العمل. توجد عناوين بريد إلكتروني أخرى للموظفين في تلك الصفحة."
+    },
+    "sourceIds": ["upt-international"]
+  },
+  {
+    "id": "university-office",
+    "name": {
+      "en": "Your university’s international students office",
+      "ro": "Biroul de studenți internaționali al universității tale",
+      "fr": "Le bureau des étudiants internationaux de votre université",
+      "ar": "مكتب الطلاب الدوليين في جامعتك"
+    },
+    "description": {
+      "en": "Most universities have an office for international students. Only the UPT office is verified in this app; other universities are not listed yet.",
+      "ro": "Majoritatea universităților au un birou pentru studenți internaționali. În această aplicație este verificat doar biroul UPT; celelalte universități nu sunt încă listate.",
+      "fr": "La plupart des universités ont un bureau pour les étudiants internationaux. Seul celui de l’UPT est vérifié dans cette application ; les autres universités ne sont pas encore listées.",
+      "ar": "لدى معظم الجامعات مكتب للطلاب الدوليين. تم التحقق من مكتب UPT فقط في هذا التطبيق؛ ولم تُدرج الجامعات الأخرى بعد."
+    },
+    "services": [
+      { "en": "Student-status certificate", "ro": "Adeverință de student", "fr": "Attestation d’étudiant", "ar": "شهادة صفة الطالب" },
+      { "en": "Advice on permits, accommodation and insurance", "ro": "Sfaturi despre permise, cazare și asigurare", "fr": "Conseils sur les titres de séjour, le logement et l’assurance", "ar": "نصائح حول التصاريح والسكن والتأمين" }
+    ],
+    "address": null,
+    "phone": null,
+    "email": null,
+    "website": "https://www.upt.ro/educatie/international-students",
+    "hours": null,
+    "verifiedNote": {
+      "en": "No address or contact is listed because it depends on your university. The link goes to UPT as an example; use your own university’s official website.",
+      "ro": "Nu sunt listate adresă sau contact, deoarece depind de universitatea ta. Linkul duce la UPT ca exemplu; folosește site-ul oficial al universității tale.",
+      "fr": "Aucune adresse ni contact n’est listé car cela dépend de votre université. Le lien mène à l’UPT à titre d’exemple ; utilisez le site officiel de votre université.",
+      "ar": "لا يوجد عنوان أو اتصال لأن ذلك يعتمد على جامعتك. الرابط يؤدي إلى UPT كمثال؛ استخدم الموقع الرسمي لجامعتك."
+    },
+    "sourceIds": ["upt-edu"],
+    "placeholder": true
+  },
+  {
+    "id": "primaria-timisoara",
+    "name": {
+      "en": "Timișoara City Hall (population records)",
+      "ro": "Primăria Municipiului Timișoara (evidența persoanelor)",
+      "fr": "Mairie de Timișoara (état civil et population)",
+      "ar": "بلدية تيميشوارا (سجلات السكان)"
+    },
+    "description": {
+      "en": "The local authority. Its population-records service handles Romanian ID cards and residence mentions. Whether it is relevant for foreign newcomers must be confirmed.",
+      "ro": "Autoritatea locală. Serviciul de evidență a persoanelor se ocupă de cărțile de identitate și de mențiunile de reședință. Dacă este relevant pentru străini trebuie confirmat.",
+      "fr": "L’autorité locale. Son service de population gère les cartes d’identité roumaines et les mentions de résidence. Sa pertinence pour les nouveaux arrivants étrangers doit être confirmée.",
+      "ar": "السلطة المحلية. تتولى مصلحة سجلات السكان بطاقات الهوية الرومانية وبيانات الإقامة. يجب التأكد من مدى صلتها بالقادمين الأجانب."
+    },
+    "services": [
+      { "en": "ID cards and residence mentions (Romanian citizens)", "ro": "Cărți de identitate și mențiuni de reședință (cetățeni români)", "fr": "Cartes d’identité et mentions de résidence (citoyens roumains)", "ar": "بطاقات الهوية وبيانات الإقامة (للمواطنين الرومانيين)" },
+      { "en": "Electronic ID card appointments are booked online through HUB-MAI", "ro": "Programările pentru cartea electronică de identitate se fac online prin HUB-MAI", "fr": "Les rendez-vous pour la carte d’identité électronique se prennent en ligne via HUB-MAI", "ar": "تُحجز مواعيد بطاقة الهوية الإلكترونية عبر الإنترنت من خلال HUB-MAI" }
+    ],
+    "address": "Bd. C.D. Loga nr. 1, 300030 Timișoara",
+    "phone": null,
+    "email": "primariatm@primariatm.ro",
+    "website": "https://www.primariatm.ro/",
+    "hours": null,
+    "verifiedNote": {
+      "en": "Address and general email are from an undated City Hall report. The phone number in that report was incomplete and opening hours were not listed. The records section may be at a different counter; check the website.",
+      "ro": "Adresa și e-mailul general provin dintr-un raport nedatat al Primăriei. Numărul de telefon din raport era incomplet, iar programul nu era menționat. Serviciul poate fi la alt ghișeu; verifică site-ul.",
+      "fr": "L’adresse et l’e-mail général viennent d’un rapport non daté de la mairie. Le numéro de téléphone y était incomplet et les horaires n’étaient pas indiqués. Le service peut se trouver à un autre guichet ; consultez le site.",
+      "ar": "العنوان والبريد العام من تقرير غير مؤرخ للبلدية. كان رقم الهاتف فيه ناقصًا ولم تُذكر ساعات العمل. قد يكون القسم في شباك آخر؛ راجع الموقع."
+    },
+    "sourceIds": ["primariatm-evidenta", "primariatm", "hub-cei"]
+  },
+  {
+    "id": "anaf-timis",
+    "name": {
+      "en": "ANAF: Timiș county tax administration",
+      "ro": "ANAF: Administrația Județeană a Finanțelor Publice Timiș",
+      "fr": "ANAF : Administration fiscale du département de Timiș",
+      "ar": "ANAF: الإدارة الضريبية لمقاطعة تيميش"
+    },
+    "description": {
+      "en": "The tax authority. It can tell you whether you need a tax identification number.",
+      "ro": "Autoritatea fiscală. Îți poate spune dacă ai nevoie de un număr de identificare fiscală.",
+      "fr": "L’autorité fiscale. Elle peut vous dire si vous avez besoin d’un numéro d’identification fiscale.",
+      "ar": "السلطة الضريبية. يمكنها إخبارك إن كنت بحاجة إلى رقم تعريف ضريبي."
+    },
+    "services": [
+      { "en": "Tax identification questions", "ro": "Întrebări despre identificarea fiscală", "fr": "Questions sur l’identification fiscale", "ar": "أسئلة حول التعريف الضريبي" }
+    ],
+    "address": "Str. Gheorghe Lazăr nr. 9B, Timișoara",
+    "phone": "0256.290.500",
+    "email": "Relatii.Publice.TM@anaf.ro",
+    "website": "https://www.anaf.ro/",
+    "hours": {
+      "en": "Public service: Mon, Tue, Thu, Fri 08:30–16:30; Wed 08:30–18:30. Office working hours: Mon–Thu 08:00–16:30, Fri 08:00–14:00.",
+      "ro": "Relații cu publicul: luni, marți, joi, vineri 08:30–16:30; miercuri 08:30–18:30. Program de lucru: luni–joi 08:00–16:30, vineri 08:00–14:00.",
+      "fr": "Accueil du public : lun, mar, jeu, ven 08:30–16:30 ; mer 08:30–18:30. Horaires de bureau : lun–jeu 08:00–16:30, ven 08:00–14:00.",
+      "ar": "استقبال الجمهور: الإثنين والثلاثاء والخميس والجمعة 08:30–16:30؛ الأربعاء 08:30–18:30. دوام المكاتب: الإثنين–الخميس 08:00–16:30، الجمعة 08:00–14:00."
+    },
+    "verifiedNote": {
+      "en": "From an undated ANAF contact page. Confirm the hours on anaf.ro before you go. The email is for general public relations and does not accept petitions or requests.",
+      "ro": "De pe o pagină de contact ANAF fără dată. Confirmă programul pe anaf.ro înainte să mergi. E-mailul este pentru relații publice generale și nu primește petiții sau cereri.",
+      "fr": "D’après une page de contact de l’ANAF non datée. Confirmez les horaires sur anaf.ro avant d’y aller. L’e-mail sert aux relations publiques générales et n’accepte pas les pétitions ni les demandes.",
+      "ar": "من صفحة اتصال غير مؤرخة لـ ANAF. تأكد من ساعات العمل على anaf.ro قبل الذهاب. البريد مخصص للعلاقات العامة ولا يقبل الالتماسات أو الطلبات."
+    },
+    "sourceIds": ["anaf-timis-contact", "anaf-home"]
+  },
+  {
+    "id": "cnas",
+    "name": {
+      "en": "CNAS: National Health Insurance House",
+      "ro": "CNAS: Casa Națională de Asigurări de Sănătate",
+      "fr": "CNAS : Caisse nationale d’assurance maladie",
+      "ar": "CNAS: صندوق التأمين الصحي الوطني"
+    },
+    "description": {
+      "en": "The national health insurance fund. Ask whether and how you can join the public system.",
+      "ro": "Casa națională de asigurări. Întreabă dacă și cum poți intra în sistemul public.",
+      "fr": "La caisse nationale d’assurance maladie. Demandez si et comment vous pouvez rejoindre le système public.",
+      "ar": "صندوق التأمين الصحي الوطني. اسأل إن كان بإمكانك الانضمام إلى النظام العام وكيف."
+    },
+    "services": [
+      { "en": "Public health insurance information", "ro": "Informații despre asigurarea publică de sănătate", "fr": "Informations sur l’assurance maladie publique", "ar": "معلومات عن التأمين الصحي العام" }
+    ],
+    "address": null,
+    "phone": null,
+    "email": null,
+    "website": "https://cnas.ro/",
+    "hours": null,
+    "verifiedNote": {
+      "en": "Only the official website is listed. The address and phone of the Timiș county health insurance house were not verified. Start at cnas.ro.",
+      "ro": "Este listat doar site-ul oficial. Adresa și telefonul Casei de Asigurări de Sănătate Timiș nu au fost verificate. Începe de la cnas.ro.",
+      "fr": "Seul le site officiel est indiqué. L’adresse et le téléphone de la caisse d’assurance maladie de Timiș n’ont pas été vérifiés. Commencez par cnas.ro.",
+      "ar": "تم إدراج الموقع الرسمي فقط. لم يتم التحقق من عنوان وهاتف صندوق التأمين الصحي في تيميش. ابدأ من cnas.ro."
+    },
+    "sourceIds": ["cnas-home"]
+  }
+]

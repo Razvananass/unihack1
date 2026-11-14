@@ -1,0 +1,125 @@
+{
+  "igi-home": {
+    "title": "General Inspectorate for Immigration (IGI)",
+    "url": "https://igi.mai.gov.ro/",
+    "kind": "government",
+    "retrieved": "2026-11-13",
+    "note": "Main IGI website. The pages for student permits and registration certificates could not be opened while preparing this data, so permit details are marked as needing confirmation."
+  },
+  "igi-timis-page": {
+    "title": "IGI news page listing the Timiș county office (address and phone)",
+    "url": "https://igi.mai.gov.ro/informare-privind-procedura-invitatiei/",
+    "kind": "government",
+    "retrieved": "2026-11-13",
+    "note": "Page dated 14 May 2024. It lists the Timiș office as Str. Andrei Mocioni nr. 8-10, Timișoara, phone 0256.402430."
+  },
+  "igi-contact": {
+    "title": "IGI contact page (territorial offices)",
+    "url": "https://igi.mai.gov.ro/contact/",
+    "kind": "government",
+    "retrieved": "2026-11-13",
+    "note": "Linked from the IGI website. Not opened; use it to check current contact details and opening hours."
+  },
+  "igi-forms": {
+    "title": "IGI forms",
+    "url": "https://igi.mai.gov.ro/category/formulare/",
+    "kind": "government",
+    "retrieved": "2026-11-13",
+    "note": "Linked from the IGI website. Not opened."
+  },
+  "igi-faq": {
+    "title": "IGI frequently asked questions",
+    "url": "https://igi.mai.gov.ro/category/intrebari-frecvente/",
+    "kind": "government",
+    "retrieved": "2026-11-13",
+    "note": "Linked from the IGI website. Not opened."
+  },
+  "igi-oug194": {
+    "title": "Emergency Ordinance 194/2002 on the regime of foreigners (PDF on igi.mai.gov.ro)",
+    "url": "https://igi.mai.gov.ro/wp-content/uploads/2024/04/ORDONANTA-DE-URGENTA-nr.-194-din-12-decembrie-2002.pdf",
+    "kind": "government",
+    "retrieved": "2026-11-13",
+    "note": "The legal basis for foreigners' stay. Linked from IGI. Not read in full; the law may have been amended."
+  },
+  "igi-portal": {
+    "title": "IGI online portal",
+    "url": "https://portaligi.mai.gov.ro",
+    "kind": "government",
+    "retrieved": "2026-11-13",
+    "note": "Mentioned by a university page as an online way to apply. Not opened."
+  },
+  "uav-permit": {
+    "title": "Aurel Vlaicu University of Arad: Obtaining the Student Residence Permit",
+    "url": "https://www.uav.ro/en/internationalisation/international-students/obtaining-the-student-residence-permit",
+    "kind": "university",
+    "retrieved": "2026-11-13",
+    "note": "A university guide (page marked 2025), not IGI itself. Requirements and fees may have changed."
+  },
+  "umf-cluj-stay": {
+    "title": "UMF Cluj-Napoca: Legal stay of foreign citizens in Romania",
+    "url": "https://umfcluj.ro/universitate/rectorat/departament-studenti-internationali/sederea-legala-cetatenilor-straini-romania/",
+    "kind": "university",
+    "retrieved": "2026-11-13",
+    "note": "A university guide (page last modified May 2023), not IGI itself."
+  },
+  "upt-international": {
+    "title": "Politehnica University Timișoara: International Students Office",
+    "url": "https://international.upt.ro/en/",
+    "kind": "university",
+    "retrieved": "2026-11-13"
+  },
+  "upt-edu": {
+    "title": "Politehnica University Timișoara: International Students (incl. International Student Guide)",
+    "url": "https://www.upt.ro/educatie/international-students",
+    "kind": "university",
+    "retrieved": "2026-11-13",
+    "note": "Links to an International Student Guide PDF for 2026-2027. The PDF was not read."
+  },
+  "primariatm": {
+    "title": "Timișoara City Hall",
+    "url": "https://www.primariatm.ro/",
+    "kind": "government",
+    "retrieved": "2026-11-13"
+  },
+  "primariatm-evidenta": {
+    "title": "Timișoara City Hall: report of the population records directorate (PDF)",
+    "url": "https://assets.primariatm.ro/409a01d0-27bd-4bc3-8d0c-d733d6d4c75f/Direc%C8%9Biei%20de%20Eviden%C8%9B%C4%83%20a%20Persoanelor.pdf",
+    "kind": "government",
+    "retrieved": "2026-11-13",
+    "note": "Undated activity report. Lists the address, services (ID cards, residence registration) and a 5 working-day processing time for residence registration."
+  },
+  "hub-cei": {
+    "title": "HUB-MAI: appointments for the electronic ID card",
+    "url": "https://hub.mai.gov.ro/cei/programari",
+    "kind": "government",
+    "retrieved": "2026-11-13",
+    "note": "Named in the City Hall report as the only way to book electronic ID card appointments. Not opened."
+  },
+  "anaf-home": {
+    "title": "ANAF: National Agency for Fiscal Administration",
+    "url": "https://www.anaf.ro/",
+    "kind": "government",
+    "retrieved": "2026-11-13"
+  },
+  "anaf-timis-contact": {
+    "title": "ANAF: contact page of the Timiș county tax administration (PDF)",
+    "url": "https://static.anaf.ro/static/10/Timisoara/Timis/Contact_AJFP_Timis.pdf",
+    "kind": "government",
+    "retrieved": "2026-11-13",
+    "note": "Undated. Lists address, phone and opening hours."
+  },
+  "cnas-home": {
+    "title": "CNAS: National Health Insurance House",
+    "url": "https://cnas.ro/",
+    "kind": "government",
+    "retrieved": "2026-11-13",
+    "note": "Main website. Specific rules for foreign students were not read."
+  },
+  "youreurope-registration": {
+    "title": "Your Europe: registering residence of EU citizens' family members after 3 months",
+    "url": "https://europa.eu/youreurope/citizens/residence/documents-formalities/eu-family-members-registration/index_ro.htm",
+    "kind": "eu",
+    "retrieved": "2026-11-13",
+    "note": "Describes the EU-wide registration after 3 months for family members. It does not cover Romanian rules for students."
+  }
+}

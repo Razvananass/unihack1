@@ -1,0 +1,52 @@
+[
+  {
+    "id": "more-documents",
+    "ro": "Ce documente mai sunt necesare?",
+    "pron": "cheh doh-koo-MEN-teh migh soont neh-cheh-SAH-reh",
+    "meaning": {
+      "en": "Which other documents are needed?",
+      "fr": "De quels autres documents ai-je besoin ?",
+      "ar": "ما المستندات الأخرى المطلوبة؟"
+    }
+  },
+  {
+    "id": "fee",
+    "ro": "Cât costă taxa și unde o pot plăti?",
+    "pron": "kuht KOHS-tuh TAHK-sah shee OON-deh oh poht pluh-TEE",
+    "meaning": {
+      "en": "How much is the fee and where can I pay it?",
+      "fr": "Combien coûte la taxe et où puis-je la payer ?",
+      "ar": "كم الرسوم وأين يمكنني دفعها؟"
+    }
+  },
+  {
+    "id": "duration",
+    "ro": "Cât durează procesul de obicei?",
+    "pron": "kuht doo-reh-AH-zuh proh-CHEH-sool deh oh-bee-CHAY",
+    "meaning": {
+      "en": "How long does the process usually take?",
+      "fr": "Combien de temps dure généralement la procédure ?",
+      "ar": "كم تستغرق العملية عادةً؟"
+    }
+  },
+  {
+    "id": "appointment",
+    "ro": "Pot veni fără programare sau trebuie să fac o programare?",
+    "pron": "poht VEH-nee FUH-ruh proh-grah-MAH-reh sow TREH-boo-yeh suh fahk oh proh-grah-MAH-reh",
+    "meaning": {
+      "en": "Can I come without an appointment, or do I need to make one?",
+      "fr": "Puis-je venir sans rendez-vous, ou dois-je en prendre un ?",
+      "ar": "هل يمكنني الحضور دون موعد أم يجب أن أحجز موعدًا؟"
+    }
+  },
+  {
+    "id": "write-down",
+    "ro": "Puteți să-mi scrieți, vă rog, ce trebuie să fac mai departe?",
+    "pron": "poo-TEHTS suh-mee SKREE-ehts vuh rohg cheh TREH-boo-yeh suh fahk migh deh-PAR-teh",
+    "meaning": {
+      "en": "Could you please write down what I need to do next?",
+      "fr": "Pourriez-vous m’écrire ce que je dois faire ensuite, s’il vous plaît ?",
+      "ar": "هل يمكنكم أن تكتبوا لي ما يجب أن أفعله بعد ذلك، من فضلكم؟"
+    }
+  }
+]

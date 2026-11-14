@@ -1,0 +1,763 @@
+[
+  {
+    "id": "university-enrolment",
+    "order": 10,
+    "completedKey": "university",
+    "institutionId": "university-office",
+    "title": {
+      "en": "University enrolment and student-status certificate",
+      "ro": "Înscrierea la universitate și adeverința de student",
+      "fr": "Inscription à l’université et attestation d’étudiant",
+      "ar": "التسجيل في الجامعة وشهادة إثبات صفة الطالب"
+    },
+    "summary": {
+      "en": "Finish your enrolment and ask your university’s international office for a student-status certificate. Immigration offices usually ask for it.",
+      "ro": "Finalizează înscrierea și cere biroului internațional al universității o adeverință de student. Oficiile de imigrări o cer de obicei.",
+      "fr": "Terminez votre inscription et demandez à votre université une attestation d’étudiant. Les services d’immigration la demandent généralement.",
+      "ar": "أكمل تسجيلك واطلب من مكتب الطلاب الدوليين في جامعتك شهادة تثبت صفتك كطالب. غالبًا ما تطلبها دوائر الهجرة."
+    },
+    "why": {
+      "en": "Other procedures, such as your residence permit or registration, usually need proof that you are a student.",
+      "ro": "Alte proceduri, precum permisul de ședere sau înregistrarea, cer de obicei dovada că ești student.",
+      "fr": "D’autres démarches, comme le titre de séjour ou l’enregistrement, demandent généralement la preuve que vous êtes étudiant.",
+      "ar": "تتطلب إجراءات أخرى، مثل تصريح الإقامة أو التسجيل، عادةً إثباتًا بأنك طالب."
+    },
+    "whoNeeds": {
+      "en": "International students admitted to a Romanian university, whether EU or non-EU.",
+      "ro": "Studenții internaționali admiși la o universitate din România, din UE sau din afara UE.",
+      "fr": "Les étudiants internationaux admis dans une université roumaine, qu’ils soient de l’UE ou non.",
+      "ar": "الطلاب الدوليون المقبولون في جامعة رومانية، سواء من الاتحاد الأوروبي أو من خارجه."
+    },
+    "whoDoesNot": {
+      "en": "People who are not studying in Romania.",
+      "ro": "Persoanele care nu studiază în România.",
+      "fr": "Les personnes qui n’étudient pas en Roumanie.",
+      "ar": "الأشخاص الذين لا يدرسون في رومانيا."
+    },
+    "submitWhere": {
+      "en": "You do not submit this to an authority. You ask for the certificate at your university’s international students office or student secretariat, then use it for other applications.",
+      "ro": "Nu o depui la o autoritate. Soliciți adeverința la biroul de studenți internaționali sau la secretariatul universității, apoi o folosești la alte cereri.",
+      "fr": "Vous ne la déposez pas auprès d’une autorité. Vous demandez l’attestation au bureau des étudiants internationaux ou à la scolarité, puis vous l’utilisez pour d’autres demandes.",
+      "ar": "لا تقدّمها إلى جهة رسمية. تطلب الشهادة من مكتب الطلاب الدوليين أو شؤون الطلاب في جامعتك ثم تستخدمها في طلبات أخرى."
+    },
+    "documents": [
+      {
+        "name": { "en": "Acceptance or admission letter from your university" },
+        "whereToGet": { "en": "Your university’s admissions or international students office" },
+        "level": "confirm"
+      },
+      {
+        "name": { "en": "Passport or national ID card" },
+        "whereToGet": { "en": "Issued by your home country. Keep the original and a copy." },
+        "level": "confirm"
+      },
+      {
+        "name": { "en": "Student-status certificate (adeverință de student)" },
+        "whereToGet": { "en": "Your university’s international students office or student secretariat" },
+        "level": "confirm"
+      }
+    ],
+    "steps": [
+      { "text": { "en": "Complete the enrolment steps your university sent after admission." }, "level": "confirm" },
+      {
+        "text": { "en": "Contact your university’s international students office. At Politehnica University Timișoara (UPT) this is the International Students Office in the Rectorate building, Piața Victoriei 2, Timișoara (office 107)." },
+        "level": "verified",
+        "sourceIds": ["upt-international"]
+      },
+      {
+        "text": { "en": "Ask for a student-status certificate (adeverință de student). University guides mention a certificate confirming full-time enrolment, so ask whether yours says this." },
+        "level": "recommended",
+        "sourceIds": ["uav-permit"]
+      },
+      {
+        "text": { "en": "Ask the office what else it handles for newcomers. The UPT office says it keeps in contact with the immigration services and helps with accommodation and health insurance." },
+        "level": "verified",
+        "sourceIds": ["upt-international"]
+      }
+    ],
+    "warnings": [
+      {
+        "text": { "en": "How long the certificate takes differs by university. One Romanian medical university reports up to 10 working days, so ask early." },
+        "level": "confirm",
+        "sourceIds": ["umf-cluj-stay"]
+      },
+      {
+        "text": { "en": "Only the UPT office details are verified in this app. For another university, use its own official website." },
+        "level": "recommended"
+      }
+    ],
+    "processingTime": {
+      "text": {
+        "en": "Varies by university. One Romanian medical university reports up to 10 working days. Ask your own university.",
+        "ro": "Diferă în funcție de universitate. O universitate de medicină din România indică până la 10 zile lucrătoare. Întreabă universitatea ta.",
+        "fr": "Varie selon l’université. Une université de médecine roumaine indique jusqu’à 10 jours ouvrables. Demandez à votre université.",
+        "ar": "تختلف المدة حسب الجامعة. تذكر جامعة طبية رومانية مدة تصل إلى 10 أيام عمل. اسأل جامعتك."
+      },
+      "level": "confirm",
+      "sourceIds": ["umf-cluj-stay"]
+    },
+    "deadline": null,
+    "priority": {
+      "level": "high",
+      "reason": {
+        "en": "Other applications need the student-status certificate, so it unblocks the rest.",
+        "ro": "Alte cereri au nevoie de adeverința de student, deci deblochează restul pașilor.",
+        "fr": "D’autres demandes exigent l’attestation d’étudiant ; elle débloque donc le reste.",
+        "ar": "تحتاج طلبات أخرى إلى شهادة صفة الطالب، لذلك فهي تفتح الباب لبقية الإجراءات."
+      }
+    },
+    "audience": [{ "situations": ["student"], "citizenships": ["eu", "non-eu"], "relevance": "core" }],
+    "sourceIds": ["upt-international", "upt-edu", "umf-cluj-stay"],
+    "lastVerified": "2026-11-13"
+  },
+  {
+    "id": "address-registration",
+    "order": 20,
+    "completedKey": "address",
+    "institutionId": "igi-timis",
+    "title": {
+      "en": "Proof of accommodation and address registration",
+      "ro": "Dovada locuinței și înregistrarea adresei",
+      "fr": "Justificatif de logement et enregistrement de l’adresse",
+      "ar": "إثبات السكن وتسجيل العنوان"
+    },
+    "summary": {
+      "en": "Immigration offices usually ask where you live. Arrange a written accommodation contract, then check with IGI how your address must be registered or reported.",
+      "ro": "Oficiile de imigrări cer de obicei unde locuiești. Procură-ți un contract de cazare în scris, apoi verifică la IGI cum trebuie înregistrată sau comunicată adresa.",
+      "fr": "Les services d’immigration demandent généralement où vous habitez. Obtenez un contrat de logement écrit, puis vérifiez auprès de l’IGI comment l’adresse doit être enregistrée ou déclarée.",
+      "ar": "تسأل دوائر الهجرة عادةً عن مكان سكنك. احصل على عقد سكن مكتوب ثم اسأل مفتشية الهجرة (IGI) كيف يجب تسجيل عنوانك أو الإبلاغ عنه."
+    },
+    "why": {
+      "en": "A university guide lists proof of a legal right to your living space among the documents for a residence permit. The exact document IGI accepts must be confirmed.",
+      "ro": "Un ghid universitar include dovada dreptului legal asupra locuinței printre actele pentru permisul de ședere. Documentul exact acceptat de IGI trebuie confirmat.",
+      "fr": "Un guide universitaire cite la preuve du droit légal d’occuper le logement parmi les documents du titre de séjour. Le document exact accepté par l’IGI doit être confirmé.",
+      "ar": "يذكر دليل جامعي إثبات الحق القانوني في السكن ضمن مستندات تصريح الإقامة. يجب التأكد من المستند الذي تقبله IGI بالتحديد."
+    },
+    "whoNeeds": {
+      "en": "Anyone living in Romania, EU and non-EU alike. The exact rules depend on your citizenship and permit type and must be confirmed.",
+      "ro": "Oricine locuiește în România, din UE sau din afara UE. Regulile exacte depind de cetățenie și de tipul permisului și trebuie confirmate.",
+      "fr": "Toute personne qui vit en Roumanie, de l’UE ou non. Les règles exactes dépendent de votre nationalité et du type de titre, et doivent être confirmées.",
+      "ar": "كل من يعيش في رومانيا، من الاتحاد الأوروبي أو من خارجه. تعتمد القواعد الدقيقة على جنسيتك ونوع الإذن ويجب التأكد منها."
+    },
+    "whoDoesNot": {
+      "en": "Romanian citizens register their residence through the city hall population-records service. Check whether anything applies to you as a foreign citizen.",
+      "ro": "Cetățenii români își înregistrează reședința la serviciul de evidență a persoanelor din primărie. Verifică dacă ceva se aplică și ție, ca cetățean străin.",
+      "fr": "Les citoyens roumains enregistrent leur résidence auprès du service d’état civil de la mairie. Vérifiez ce qui s’applique à vous en tant que citoyen étranger.",
+      "ar": "يسجّل المواطنون الرومانيون إقامتهم لدى مصلحة سجلات السكان في البلدية. تحقق مما ينطبق عليك كمواطن أجنبي."
+    },
+    "submitWhere": {
+      "en": "For foreign citizens, proof of accommodation is usually handed in with the residence application at IGI. Confirm this with IGI or your university’s international office.",
+      "ro": "Pentru cetățenii străini, dovada locuinței se depune de obicei împreună cu cererea de ședere la IGI. Confirmă la IGI sau la biroul internațional al universității.",
+      "fr": "Pour les citoyens étrangers, le justificatif de logement est généralement remis avec la demande de séjour à l’IGI. Confirmez auprès de l’IGI ou du bureau international de votre université.",
+      "ar": "بالنسبة للأجانب، يُقدَّم إثبات السكن عادةً مع طلب الإقامة لدى IGI. تأكد من ذلك مع IGI أو مكتب الطلاب الدوليين في جامعتك."
+    },
+    "documents": [
+      {
+        "name": { "en": "Accommodation contract (rental contract or student dormitory contract)" },
+        "whereToGet": { "en": "Your landlord, or the university accommodation office for a dormitory" },
+        "level": "confirm",
+        "sourceIds": ["uav-permit"]
+      },
+      {
+        "name": { "en": "Proof that the owner or landlord agrees to you living there" },
+        "whereToGet": { "en": "Your landlord" },
+        "level": "confirm"
+      },
+      {
+        "name": { "en": "Passport or national ID card" },
+        "whereToGet": { "en": "Issued by your home country" },
+        "level": "confirm"
+      }
+    ],
+    "steps": [
+      {
+        "text": { "en": "Arrange accommodation: a university dormitory or a private rental. UPT says its International Students Office helps incoming students with accommodation, and its campus has student residences." },
+        "level": "verified",
+        "sourceIds": ["upt-international"]
+      },
+      { "text": { "en": "Ask for a written contract and keep the original and copies." }, "level": "recommended" },
+      {
+        "text": { "en": "Ask IGI, or your university’s international office, which accommodation document is accepted for your permit or registration." },
+        "level": "confirm"
+      },
+      {
+        "text": { "en": "If you move, ask IGI how and by when a change of address must be reported. The deadline is not verified here." },
+        "level": "confirm"
+      },
+      {
+        "text": { "en": "The Timișoara City Hall population-records service handles ID cards and registering a residence on an ID card. If someone sends you there, ask whether it applies to foreign citizens." },
+        "level": "confirm",
+        "sourceIds": ["primariatm-evidenta"]
+      }
+    ],
+    "warnings": [
+      { "text": { "en": "Do not pay a deposit or rent without a signed contract." }, "level": "recommended" },
+      {
+        "text": { "en": "How foreign citizens register an address was not verified from official pages for this app. Check with IGI before you rely on this guide." },
+        "level": "confirm"
+      }
+    ],
+    "processingTime": {
+      "text": {
+        "en": "A City Hall report lists about 5 working days for registering a residence on an ID card. This may not apply to foreign citizens.",
+        "ro": "Un raport al Primăriei indică aproximativ 5 zile lucrătoare pentru înregistrarea reședinței pe cartea de identitate. S-ar putea să nu se aplice cetățenilor străini.",
+        "fr": "Un rapport de la mairie indique environ 5 jours ouvrables pour inscrire une résidence sur une carte d’identité. Cela peut ne pas s’appliquer aux citoyens étrangers.",
+        "ar": "يذكر تقرير للبلدية نحو 5 أيام عمل لتسجيل الإقامة على بطاقة الهوية. قد لا ينطبق ذلك على المواطنين الأجانب."
+      },
+      "level": "confirm",
+      "sourceIds": ["primariatm-evidenta"]
+    },
+    "deadline": null,
+    "audience": [
+      { "situations": ["student"], "citizenships": ["eu", "non-eu"], "relevance": "core" },
+      { "situations": ["worker", "refugee", "other"], "citizenships": ["eu", "non-eu"], "relevance": "verify" }
+    ],
+    "sourceIds": ["igi-home", "igi-contact", "igi-timis-page", "primariatm", "primariatm-evidenta", "upt-international", "uav-permit"],
+    "lastVerified": "2026-11-13"
+  },
+  {
+    "id": "health-insurance",
+    "order": 30,
+    "completedKey": "health",
+    "institutionId": "cnas",
+    "title": {
+      "en": "Health insurance",
+      "ro": "Asigurarea de sănătate",
+      "fr": "Assurance maladie",
+      "ar": "التأمين الصحي"
+    },
+    "summary": {
+      "en": "Find out which health cover you need. EU students may be able to use a card from their home country; others may need Romanian or private insurance. Confirm with your university and CNAS.",
+      "ro": "Află ce asigurare de sănătate ți se potrivește. Studenții din UE pot folosi uneori un card din țara de origine; ceilalți pot avea nevoie de asigurare românească sau privată. Confirmă la universitate și la CNAS.",
+      "fr": "Découvrez de quelle couverture santé vous avez besoin. Les étudiants de l’UE peuvent parfois utiliser une carte de leur pays ; les autres peuvent avoir besoin d’une assurance roumaine ou privée. Confirmez auprès de votre université et de la CNAS.",
+      "ar": "اعرف أي تأمين صحي تحتاج. قد يستطيع طلاب الاتحاد الأوروبي استخدام بطاقة من بلدهم، وقد يحتاج الآخرون إلى تأمين روماني أو خاص. تأكد من جامعتك ومن CNAS."
+    },
+    "why": {
+      "en": "Health care can be expensive without cover, and some applications may ask for proof of insurance. This has not been confirmed for every case.",
+      "ro": "Îngrijirea medicală poate fi costisitoare fără asigurare, iar unele cereri pot cere dovada asigurării. Nu a fost confirmat pentru toate cazurile.",
+      "fr": "Les soins peuvent coûter cher sans couverture, et certaines demandes peuvent exiger une preuve d’assurance. Cela n’a pas été confirmé pour tous les cas.",
+      "ar": "قد تكون الرعاية الصحية باهظة دون تأمين، وقد تطلب بعض الطلبات إثباتًا للتأمين. لم يتم التأكد من ذلك في كل الحالات."
+    },
+    "whoNeeds": {
+      "en": "All newcomers. The kind of cover you need depends on your citizenship, any scholarship, and your permit type.",
+      "ro": "Toți nou-veniții. Tipul de asigurare depinde de cetățenie, de eventuala bursă și de tipul permisului.",
+      "fr": "Tous les nouveaux arrivants. Le type de couverture dépend de votre nationalité, d’une éventuelle bourse et de votre type de titre.",
+      "ar": "جميع القادمين الجدد. يعتمد نوع التأمين على جنسيتك وعلى أي منحة دراسية ونوع الإذن."
+    },
+    "whoDoesNot": {
+      "en": "Some people may already be covered, for example through an employer or a scholarship. Ask your university or CNAS.",
+      "ro": "Unele persoane pot fi deja acoperite, de exemplu prin angajator sau printr-o bursă. Întreabă universitatea sau CNAS.",
+      "fr": "Certaines personnes sont peut-être déjà couvertes, par exemple par un employeur ou une bourse. Demandez à votre université ou à la CNAS.",
+      "ar": "قد يكون بعض الأشخاص مشمولين بالفعل، مثلًا عبر صاحب العمل أو المنحة. اسأل جامعتك أو CNAS."
+    },
+    "submitWhere": {
+      "en": "Health insurance is arranged with your insurer, or with the national health insurance system through CNAS. You show the proof when an office asks for it.",
+      "ro": "Asigurarea se face la asiguratorul tău sau în sistemul național de asigurări de sănătate prin CNAS. Dovada o prezinți când o cere o instituție.",
+      "fr": "L’assurance se souscrit auprès de votre assureur ou du système national via la CNAS. Vous présentez la preuve quand un service la demande.",
+      "ar": "يتم التأمين لدى شركة التأمين الخاصة بك أو عبر نظام التأمين الصحي الوطني من خلال CNAS. تقدّم الإثبات عندما تطلبه جهة ما."
+    },
+    "documents": [
+      {
+        "name": { "en": "European Health Insurance Card (EHIC), for EU/EEA/Swiss students" },
+        "whereToGet": { "en": "Your home-country health insurer" },
+        "level": "confirm"
+      },
+      {
+        "name": { "en": "Private health or travel insurance policy, if required" },
+        "whereToGet": { "en": "A private insurance company" },
+        "level": "confirm"
+      },
+      {
+        "name": { "en": "Proof of enrolment in the public health system, if you join it" },
+        "whereToGet": { "en": "CNAS or its county office" },
+        "level": "confirm"
+      }
+    ],
+    "steps": [
+      {
+        "text": { "en": "Check what your home-country insurer covers while you study abroad. EU/EEA/Swiss students should ask about the EHIC." },
+        "level": "confirm"
+      },
+      {
+        "text": { "en": "Ask your university’s international office what insurance they expect. The UPT office says it helps students with health insurance." },
+        "level": "verified",
+        "sourceIds": ["upt-international"]
+      },
+      {
+        "text": { "en": "Ask CNAS or its county office whether and how you can join the public health insurance system. Contact details for the Timiș office are not verified here; start at cnas.ro." },
+        "level": "confirm",
+        "sourceIds": ["cnas-home"]
+      },
+      { "text": { "en": "Keep a copy of your insurance papers for appointments at the immigration office." }, "level": "recommended" }
+    ],
+    "warnings": [
+      {
+        "text": { "en": "Before buying private insurance, ask IGI whether the policy must meet specific conditions to be accepted." },
+        "level": "confirm"
+      },
+      { "text": { "en": "Compare what a policy covers and excludes before you pay." }, "level": "recommended" }
+    ],
+    "processingTime": null,
+    "deadline": null,
+    "audience": [
+      { "situations": ["student"], "citizenships": ["eu", "non-eu"], "relevance": "core" },
+      { "situations": ["worker", "refugee", "other"], "citizenships": ["eu", "non-eu"], "relevance": "verify" }
+    ],
+    "sourceIds": ["cnas-home", "upt-international"],
+    "lastVerified": "2026-11-13"
+  },
+  {
+    "id": "residence-permit-student",
+    "order": 40,
+    "completedKey": "residence",
+    "institutionId": "igi-timis",
+    "title": {
+      "en": "Residence permit for studies (non-EU students)",
+      "ro": "Permis de ședere pentru studii (studenți din afara UE)",
+      "fr": "Titre de séjour pour études (étudiants hors UE)",
+      "ar": "تصريح الإقامة للدراسة (للطلاب من خارج الاتحاد الأوروبي)"
+    },
+    "summary": {
+      "en": "Non-EU students usually arrive with a long-stay study visa, then apply to IGI for a residence permit for studies, and renew it while they study.",
+      "ro": "Studenții din afara UE vin de obicei cu viză de lungă ședere pentru studii, apoi cer la IGI un permis de ședere pentru studii și îl prelungesc cât timp studiază.",
+      "fr": "Les étudiants hors UE arrivent généralement avec un visa long séjour pour études, puis demandent à l’IGI un titre de séjour pour études et le renouvellent pendant leurs études.",
+      "ar": "يصل الطلاب من خارج الاتحاد الأوروبي عادةً بتأشيرة دراسة طويلة الأمد، ثم يطلبون من IGI تصريح إقامة للدراسة ويجددونه أثناء دراستهم."
+    },
+    "why": {
+      "en": "It is what lets you stay legally after your visa period ends.",
+      "ro": "Îți permite să rămâi legal după încheierea perioadei vizei.",
+      "fr": "Il vous permet de rester légalement après la fin de la période de votre visa.",
+      "ar": "هو ما يتيح لك البقاء بشكل قانوني بعد انتهاء مدة تأشيرتك."
+    },
+    "whoNeeds": {
+      "en": "Non-EU students admitted to a Romanian university who entered on a long-stay study visa.",
+      "ro": "Studenții din afara UE admiși la o universitate din România care au intrat cu viză de lungă ședere pentru studii.",
+      "fr": "Les étudiants hors UE admis dans une université roumaine et entrés avec un visa long séjour pour études.",
+      "ar": "الطلاب من خارج الاتحاد الأوروبي المقبولون في جامعة رومانية والذين دخلوا بتأشيرة دراسة طويلة الأمد."
+    },
+    "whoDoesNot": {
+      "en": "EU/EEA/Swiss citizens (see the registration certificate guide) and Romanian citizens.",
+      "ro": "Cetățenii UE/SEE/Elveției (vezi ghidul despre certificatul de înregistrare) și cetățenii români.",
+      "fr": "Les citoyens de l’UE/EEE/Suisse (voir le guide du certificat d’enregistrement) et les citoyens roumains.",
+      "ar": "مواطنو الاتحاد الأوروبي/المنطقة الاقتصادية الأوروبية/سويسرا (انظر دليل شهادة التسجيل) والمواطنون الرومانيون."
+    },
+    "submitWhere": {
+      "en": "In person at an IGI immigration office. For Timișoara this is the Timiș county office, Str. Andrei Mocioni 8-10. A university page also mentions an online option through the IGI portal; confirm it with IGI.",
+      "ro": "Personal, la un birou de imigrări IGI. Pentru Timișoara este biroul județului Timiș, Str. Andrei Mocioni 8-10. O pagină universitară menționează și o variantă online prin portalul IGI; confirmă-o la IGI.",
+      "fr": "En personne dans un bureau d’immigration de l’IGI. À Timișoara : bureau du département de Timiș, Str. Andrei Mocioni 8-10. Une page universitaire mentionne aussi une option en ligne via le portail IGI ; confirmez-la auprès de l’IGI.",
+      "ar": "حضوريًا في أحد مكاتب الهجرة التابعة لـ IGI. في تيميشوارا هو مكتب مقاطعة تيميش، شارع أندريه موتشيوني 8-10. تذكر صفحة جامعية أيضًا خيارًا إلكترونيًا عبر بوابة IGI؛ تأكد منه مع IGI."
+    },
+    "documents": [
+      {
+        "name": { "en": "IGI application form" },
+        "whereToGet": { "en": "IGI website, forms section (igi.mai.gov.ro/category/formulare/)" },
+        "level": "confirm",
+        "sourceIds": ["uav-permit", "igi-forms"]
+      },
+      {
+        "name": { "en": "Passport or other travel document (original and copy)" },
+        "whereToGet": { "en": "Issued by your home country" },
+        "level": "confirm",
+        "sourceIds": ["uav-permit"]
+      },
+      {
+        "name": { "en": "University acceptance letter (a university guide says it is needed for the first extension)" },
+        "whereToGet": { "en": "Your university" },
+        "level": "confirm",
+        "sourceIds": ["uav-permit"]
+      },
+      {
+        "name": { "en": "Certificate confirming full-time enrolment (student-status certificate)" },
+        "whereToGet": { "en": "Your university’s international students office" },
+        "level": "confirm",
+        "sourceIds": ["uav-permit", "umf-cluj-stay"]
+      },
+      {
+        "name": { "en": "Proof of means of subsistence (a university guide mentions at least the minimum gross national salary for 6 months)" },
+        "whereToGet": { "en": "Ask IGI which proof is accepted and how the amount is calculated" },
+        "level": "confirm",
+        "sourceIds": ["uav-permit"]
+      },
+      {
+        "name": { "en": "Proof of a legal right to your living space (original and copy)" },
+        "whereToGet": { "en": "Your landlord or the university accommodation office. See the accommodation guide." },
+        "level": "confirm",
+        "sourceIds": ["uav-permit"]
+      },
+      {
+        "name": { "en": "Medical certificate" },
+        "whereToGet": { "en": "Ask IGI or your university which certificate and which doctor are accepted" },
+        "level": "confirm",
+        "sourceIds": ["uav-permit"]
+      },
+      {
+        "name": { "en": "Proof of fee payment (amounts not verified)" },
+        "whereToGet": { "en": "Ask IGI how and where to pay" },
+        "level": "confirm",
+        "sourceIds": ["uav-permit"]
+      }
+    ],
+    "steps": [
+      {
+        "text": { "en": "Before travelling: get admitted by the university and obtain a long-stay study visa from a Romanian embassy or consulate." },
+        "level": "confirm",
+        "sourceIds": ["umf-cluj-stay"]
+      },
+      { "text": { "en": "After you arrive, ask your university for the student-status certificate." }, "level": "recommended" },
+      {
+        "text": { "en": "Collect the documents above and check the current list on the IGI website or with the IGI office." },
+        "level": "recommended"
+      },
+      {
+        "text": { "en": "Submit your application in person at the IGI office, at least 30 days before your visa or permit expires. IGI Timiș: Str. Andrei Mocioni 8-10, Timișoara, phone 0256.402430." },
+        "level": "confirm",
+        "sourceIds": ["uav-permit", "umf-cluj-stay", "igi-timis-page"]
+      },
+      {
+        "text": { "en": "Pay the fee. A university guide says recipients of a Romanian state scholarship are exempt from permit fees. Confirm this with IGI." },
+        "level": "confirm",
+        "sourceIds": ["uav-permit"]
+      },
+      { "text": { "en": "Collect your permit when it is ready and note its expiry date to plan the renewal." }, "level": "recommended" }
+    ],
+    "warnings": [
+      {
+        "text": { "en": "Work rights are limited. One university guide says study permit holders may work only part-time, up to 4 hours a day. Confirm the current rule before you accept a job." },
+        "level": "confirm",
+        "sourceIds": ["uav-permit"]
+      },
+      { "text": { "en": "Start early. Late applications can cause problems with your right to stay." }, "level": "recommended" },
+      {
+        "text": { "en": "This guide is based on university pages, not on IGI’s own pages. Document lists, amounts and forms may have changed." },
+        "level": "confirm"
+      }
+    ],
+    "processingTime": null,
+    "deadline": {
+      "text": {
+        "en": "Apply at least 30 days before your current visa or permit expires (reported by two university guides).",
+        "ro": "Depune cererea cu cel puțin 30 de zile înainte de expirarea vizei sau a permisului actual (indicat de două ghiduri universitare).",
+        "fr": "Déposez votre demande au moins 30 jours avant l’expiration de votre visa ou titre actuel (indiqué par deux guides universitaires).",
+        "ar": "قدّم طلبك قبل 30 يومًا على الأقل من انتهاء تأشيرتك أو تصريحك الحالي (ورد ذلك في دليلين جامعيين)."
+      },
+      "level": "confirm",
+      "sourceIds": ["uav-permit", "umf-cluj-stay"]
+    },
+    "priority": {
+      "level": "high",
+      "reason": {
+        "en": "Your right to stay depends on it. University guides say to apply at least 30 days before your current visa or permit expires; confirm with IGI.",
+        "ro": "Dreptul tău de ședere depinde de el. Ghidurile universitare spun să depui cererea cu cel puțin 30 de zile înainte de expirare; confirmă la IGI.",
+        "fr": "Votre droit de séjour en dépend. Les guides universitaires indiquent de déposer la demande au moins 30 jours avant l’expiration ; confirmez auprès de l’IGI.",
+        "ar": "يعتمد حقك في الإقامة عليه. تذكر الأدلة الجامعية تقديم الطلب قبل 30 يومًا على الأقل من الانتهاء؛ تأكد من IGI."
+      }
+    },
+    "dependsOn": ["university-enrolment", "address-registration"],
+    "audience": [{ "situations": ["student"], "citizenships": ["non-eu"], "relevance": "core" }],
+    "sourceIds": ["igi-home", "igi-forms", "igi-faq", "igi-portal", "igi-oug194", "igi-timis-page", "uav-permit", "umf-cluj-stay"],
+    "lastVerified": "2026-11-13"
+  },
+  {
+    "id": "eu-registration-certificate",
+    "order": 40,
+    "completedKey": "residence",
+    "institutionId": "igi-timis",
+    "title": {
+      "en": "Registration certificate for EU/EEA/Swiss citizens",
+      "ro": "Certificat de înregistrare pentru cetățenii UE/SEE/Elveția",
+      "fr": "Certificat d’enregistrement pour les citoyens UE/EEE/Suisse",
+      "ar": "شهادة التسجيل لمواطني الاتحاد الأوروبي/المنطقة الاقتصادية الأوروبية/سويسرا"
+    },
+    "summary": {
+      "en": "EU/EEA/Swiss citizens do not need a residence permit, but if you stay more than 3 months you will probably need to register your stay with IGI. Confirm the Romanian deadline and documents.",
+      "ro": "Cetățenii UE/SEE/Elveției nu au nevoie de permis de ședere, dar dacă rămâi mai mult de 3 luni probabil trebuie să îți înregistrezi șederea la IGI. Confirmă termenul și actele din România.",
+      "fr": "Les citoyens UE/EEE/Suisse n’ont pas besoin de titre de séjour, mais au-delà de 3 mois il faudra probablement enregistrer votre séjour auprès de l’IGI. Confirmez le délai et les documents en Roumanie.",
+      "ar": "لا يحتاج مواطنو الاتحاد الأوروبي/المنطقة الاقتصادية الأوروبية/سويسرا إلى تصريح إقامة، لكن إذا بقيت أكثر من 3 أشهر فغالبًا ستحتاج إلى تسجيل إقامتك لدى IGI. تأكد من المهلة والمستندات في رومانيا."
+    },
+    "why": {
+      "en": "EU rules let you stay freely for 3 months. After that, registering your stay is the usual step. A university page reports that the certificate can be valid for up to 5 years.",
+      "ro": "Regulile UE îți permit să stai liber 3 luni. După aceea, pasul obișnuit este înregistrarea șederii. O pagină universitară indică o valabilitate de până la 5 ani.",
+      "fr": "Les règles de l’UE permettent de séjourner librement 3 mois. Ensuite, l’enregistrement du séjour est la démarche habituelle. Une page universitaire indique une validité allant jusqu’à 5 ans.",
+      "ar": "تتيح قواعد الاتحاد الأوروبي الإقامة بحرية لمدة 3 أشهر. بعد ذلك تكون الخطوة المعتادة هي تسجيل الإقامة. تذكر صفحة جامعية صلاحية تصل إلى 5 سنوات."
+    },
+    "whoNeeds": {
+      "en": "EU/EEA/Swiss citizens staying in Romania for more than 3 months, including students. Confirm your case with IGI.",
+      "ro": "Cetățenii UE/SEE/Elveției care stau în România mai mult de 3 luni, inclusiv studenții. Confirmă cazul tău la IGI.",
+      "fr": "Les citoyens UE/EEE/Suisse qui séjournent en Roumanie plus de 3 mois, y compris les étudiants. Confirmez votre cas auprès de l’IGI.",
+      "ar": "مواطنو الاتحاد الأوروبي/المنطقة الاقتصادية الأوروبية/سويسرا المقيمون في رومانيا أكثر من 3 أشهر، ومنهم الطلاب. تأكد من حالتك مع IGI."
+    },
+    "whoDoesNot": {
+      "en": "Non-EU citizens (see the residence permit guide), Romanian citizens, and probably people staying less than 3 months.",
+      "ro": "Cetățenii din afara UE (vezi ghidul despre permisul de ședere), cetățenii români și, probabil, persoanele care stau mai puțin de 3 luni.",
+      "fr": "Les citoyens hors UE (voir le guide du titre de séjour), les citoyens roumains et probablement les personnes qui restent moins de 3 mois.",
+      "ar": "مواطنو الدول من خارج الاتحاد الأوروبي (انظر دليل تصريح الإقامة) والمواطنون الرومانيون وغالبًا من يقيمون أقل من 3 أشهر."
+    },
+    "submitWhere": {
+      "en": "At an IGI immigration office. For Timișoara this is the Timiș county office, Str. Andrei Mocioni 8-10.",
+      "ro": "La un birou de imigrări IGI. Pentru Timișoara este biroul județului Timiș, Str. Andrei Mocioni 8-10.",
+      "fr": "Dans un bureau d’immigration de l’IGI. À Timișoara : bureau du département de Timiș, Str. Andrei Mocioni 8-10.",
+      "ar": "في أحد مكاتب الهجرة التابعة لـ IGI. في تيميشوارا هو مكتب مقاطعة تيميش، شارع أندريه موتشيوني 8-10."
+    },
+    "documents": [
+      {
+        "name": { "en": "Passport or national ID card" },
+        "whereToGet": { "en": "Issued by your home country" },
+        "level": "confirm"
+      },
+      {
+        "name": { "en": "Student-status certificate from your university" },
+        "whereToGet": { "en": "Your university’s international students office" },
+        "level": "confirm",
+        "sourceIds": ["umf-cluj-stay"]
+      },
+      {
+        "name": { "en": "Proof of health insurance" },
+        "whereToGet": { "en": "Your insurer. See the health insurance guide." },
+        "level": "confirm"
+      },
+      {
+        "name": { "en": "Proof of sufficient resources" },
+        "whereToGet": { "en": "Ask IGI which proof is accepted" },
+        "level": "confirm"
+      },
+      {
+        "name": { "en": "Proof of accommodation" },
+        "whereToGet": { "en": "Your landlord or the university accommodation office. See the accommodation guide." },
+        "level": "confirm"
+      },
+      {
+        "name": { "en": "IGI application form" },
+        "whereToGet": { "en": "IGI website, forms section (igi.mai.gov.ro/category/formulare/)" },
+        "level": "confirm",
+        "sourceIds": ["igi-forms"]
+      }
+    ],
+    "steps": [
+      {
+        "text": { "en": "Work out how long you will stay. If it is more than 3 months, registration probably applies." },
+        "level": "confirm",
+        "sourceIds": ["youreurope-registration"]
+      },
+      { "text": { "en": "Ask your university for the student-status certificate." }, "level": "recommended" },
+      {
+        "text": { "en": "Check the current document list on the IGI website or with the IGI office, then collect the documents." },
+        "level": "recommended"
+      },
+      {
+        "text": { "en": "Submit your application at the IGI office. IGI Timiș: Str. Andrei Mocioni 8-10, Timișoara, phone 0256.402430." },
+        "level": "confirm",
+        "sourceIds": ["igi-timis-page"]
+      },
+      {
+        "text": { "en": "A university page reports the certificate can be issued the same day. Keep it safe and note its validity." },
+        "level": "confirm",
+        "sourceIds": ["umf-cluj-stay"]
+      }
+    ],
+    "warnings": [
+      {
+        "text": { "en": "The Romanian deadline and the exact documents were not verified from IGI’s own pages. The Your Europe page describes the EU-wide 3-month rule for family members, not Romanian rules for students." },
+        "level": "confirm",
+        "sourceIds": ["youreurope-registration"]
+      },
+      { "text": { "en": "Do not wait until the last week of the 3 months. Appointments can take time." }, "level": "recommended" }
+    ],
+    "processingTime": {
+      "text": {
+        "en": "One university page reports the certificate can be issued the same day. Confirm with IGI.",
+        "ro": "O pagină universitară indică faptul că certificatul poate fi eliberat în aceeași zi. Confirmă la IGI.",
+        "fr": "Une page universitaire indique que le certificat peut être délivré le jour même. Confirmez auprès de l’IGI.",
+        "ar": "تذكر صفحة جامعية أن الشهادة قد تصدر في اليوم نفسه. تأكد من IGI."
+      },
+      "level": "confirm",
+      "sourceIds": ["umf-cluj-stay"]
+    },
+    "deadline": {
+      "text": {
+        "en": "EU rules refer to registering after 3 months of stay. Ask IGI for the exact Romanian deadline.",
+        "ro": "Regulile UE vorbesc despre înregistrare după 3 luni de ședere. Cere la IGI termenul exact din România.",
+        "fr": "Les règles de l’UE prévoient l’enregistrement après 3 mois de séjour. Demandez à l’IGI le délai exact en Roumanie.",
+        "ar": "تنص قواعد الاتحاد الأوروبي على التسجيل بعد 3 أشهر من الإقامة. اسأل IGI عن المهلة الدقيقة في رومانيا."
+      },
+      "level": "confirm",
+      "sourceIds": ["youreurope-registration"]
+    },
+    "priority": {
+      "level": "high",
+      "reason": {
+        "en": "There is a time limit: EU rules refer to registering after 3 months of stay. Confirm the Romanian deadline with IGI.",
+        "ro": "Există un termen: regulile UE vorbesc despre înregistrare după 3 luni. Confirmă termenul din România la IGI.",
+        "fr": "Il y a un délai : les règles de l’UE prévoient l’enregistrement après 3 mois. Confirmez le délai roumain auprès de l’IGI.",
+        "ar": "هناك مهلة زمنية: تنص قواعد الاتحاد الأوروبي على التسجيل بعد 3 أشهر. تأكد من المهلة في رومانيا لدى IGI."
+      }
+    },
+    "dependsOn": ["university-enrolment", "address-registration"],
+    "audience": [
+      { "situations": ["student"], "citizenships": ["eu"], "relevance": "core" },
+      { "situations": ["worker", "refugee", "other"], "citizenships": ["eu"], "relevance": "verify" }
+    ],
+    "sourceIds": ["igi-home", "igi-forms", "igi-faq", "igi-timis-page", "umf-cluj-stay", "youreurope-registration"],
+    "lastVerified": "2026-11-13"
+  },
+  {
+    "id": "cnp",
+    "order": 50,
+    "completedKey": "cnp",
+    "institutionId": "igi-timis",
+    "title": {
+      "en": "Personal numeric code (CNP)",
+      "ro": "Cod numeric personal (CNP)",
+      "fr": "Code numérique personnel (CNP)",
+      "ar": "الرقم الشخصي الرقمي (CNP)"
+    },
+    "summary": {
+      "en": "The CNP is Romania’s personal identification number. Whether and when a foreign student receives one depends on the permit or registration type. Ask IGI.",
+      "ro": "CNP este numărul personal de identificare din România. Dacă și când îl primește un student străin depinde de tipul permisului sau al înregistrării. Întreabă la IGI.",
+      "fr": "Le CNP est le numéro d’identification personnel roumain. Savoir si un étudiant étranger en reçoit un, et quand, dépend du type de titre ou d’enregistrement. Demandez à l’IGI.",
+      "ar": "الـ CNP هو رقم التعريف الشخصي في رومانيا. يعتمد حصول الطالب الأجنبي عليه وموعد ذلك على نوع التصريح أو التسجيل. اسأل IGI."
+    },
+    "why": {
+      "en": "Many Romanian offices and services ask for a CNP. Whether you need one for your situation has not been verified.",
+      "ro": "Multe instituții și servicii din România cer un CNP. Nu a fost verificat dacă ai nevoie de unul în situația ta.",
+      "fr": "De nombreux services roumains demandent un CNP. Il n’a pas été vérifié si vous en avez besoin dans votre situation.",
+      "ar": "تطلب جهات وخدمات رومانية كثيرة رقم CNP. لم يتم التحقق مما إذا كنت تحتاجه في حالتك."
+    },
+    "whoNeeds": {
+      "en": "It depends on your permit or registration type. This is not verified here.",
+      "ro": "Depinde de tipul permisului sau al înregistrării. Nu este verificat aici.",
+      "fr": "Cela dépend de votre type de titre ou d’enregistrement. Non vérifié ici.",
+      "ar": "يعتمد ذلك على نوع تصريحك أو تسجيلك. لم يتم التحقق منه هنا."
+    },
+    "whoDoesNot": {
+      "en": "Possibly short-term visitors. This is not verified here.",
+      "ro": "Posibil vizitatorii pe termen scurt. Nu este verificat aici.",
+      "fr": "Peut-être les visiteurs de courte durée. Non vérifié ici.",
+      "ar": "ربما الزوار لفترات قصيرة. لم يتم التحقق منه هنا."
+    },
+    "submitWhere": {
+      "en": "Start by asking IGI when you submit your permit or registration application. The issuing office for your case was not verified.",
+      "ro": "Începe prin a întreba la IGI când depui cererea pentru permis sau înregistrare. Instituția care îl emite în cazul tău nu a fost verificată.",
+      "fr": "Commencez par demander à l’IGI lors du dépôt de votre demande de titre ou d’enregistrement. Le service émetteur pour votre cas n’a pas été vérifié.",
+      "ar": "ابدأ بالسؤال لدى IGI عند تقديم طلب التصريح أو التسجيل. لم يتم التحقق من الجهة المُصدِرة في حالتك."
+    },
+    "documents": [
+      {
+        "name": { "en": "Valid residence permit or registration certificate" },
+        "whereToGet": { "en": "IGI. See the permit or registration guide." },
+        "level": "confirm"
+      },
+      {
+        "name": { "en": "Passport or national ID card" },
+        "whereToGet": { "en": "Issued by your home country" },
+        "level": "confirm"
+      }
+    ],
+    "steps": [
+      {
+        "text": { "en": "When you apply for your permit or registration, ask IGI whether a CNP is assigned automatically or on request." },
+        "level": "confirm"
+      },
+      { "text": { "en": "If you receive a document that shows a CNP, store it safely." }, "level": "recommended" },
+      {
+        "text": { "en": "Never share your CNP in public or in unofficial chats. This app never asks for it." },
+        "level": "recommended"
+      }
+    ],
+    "warnings": [
+      {
+        "text": { "en": "How a CNP is issued to foreign students was not verified from official pages for this app." },
+        "level": "confirm"
+      }
+    ],
+    "processingTime": null,
+    "deadline": null,
+    "audience": [{ "situations": ["student", "worker", "refugee", "other"], "citizenships": ["eu", "non-eu"], "relevance": "verify" }],
+    "sourceIds": ["igi-home", "igi-faq"],
+    "lastVerified": "2026-11-13"
+  },
+  {
+    "id": "tax-id",
+    "order": 60,
+    "institutionId": "anaf-timis",
+    "title": {
+      "en": "Tax identification number (only if needed)",
+      "ro": "Număr de identificare fiscală (doar dacă e nevoie)",
+      "fr": "Numéro d’identification fiscale (seulement si nécessaire)",
+      "ar": "رقم التعريف الضريبي (عند الحاجة فقط)"
+    },
+    "summary": {
+      "en": "Most students do not need a tax number right away. You may need one if you work, sign certain contracts, or the tax authority (ANAF) asks. Check before you go.",
+      "ro": "Majoritatea studenților nu au nevoie imediat de un număr fiscal. Poate fi necesar dacă lucrezi, semnezi anumite contracte sau dacă ANAF îți cere. Verifică înainte să mergi.",
+      "fr": "La plupart des étudiants n’ont pas besoin tout de suite d’un numéro fiscal. Il peut être nécessaire si vous travaillez, signez certains contrats ou si l’ANAF le demande. Vérifiez avant d’y aller.",
+      "ar": "لا يحتاج معظم الطلاب إلى رقم ضريبي فورًا. قد تحتاجه إذا عملت أو وقّعت عقودًا معينة أو طلبته الإدارة الضريبية (ANAF). تحقق قبل أن تذهب."
+    },
+    "why": {
+      "en": "Employers, banks or contracts may ask for a tax number. Whether you need one depends on what you plan to do. This has not been verified.",
+      "ro": "Angajatorii, băncile sau contractele pot cere un număr fiscal. Dacă ai nevoie depinde de ce îți propui să faci. Nu a fost verificat.",
+      "fr": "Employeurs, banques ou contrats peuvent demander un numéro fiscal. Le besoin dépend de ce que vous comptez faire. Non vérifié.",
+      "ar": "قد يطلب أصحاب العمل أو البنوك أو العقود رقمًا ضريبيًا. تعتمد حاجتك إليه على ما تنوي فعله. لم يتم التحقق من ذلك."
+    },
+    "whoNeeds": {
+      "en": "Foreign citizens in certain situations, for example paid work. Confirm with ANAF or your employer.",
+      "ro": "Cetățenii străini în anumite situații, de exemplu muncă remunerată. Confirmă la ANAF sau la angajator.",
+      "fr": "Les citoyens étrangers dans certaines situations, par exemple un travail rémunéré. Confirmez auprès de l’ANAF ou de votre employeur.",
+      "ar": "الأجانب في حالات معينة، مثل العمل بأجر. تأكد من ANAF أو صاحب العمل."
+    },
+    "whoDoesNot": {
+      "en": "Many students who do not work or sign tax-related contracts. This is not verified.",
+      "ro": "Mulți studenți care nu lucrează și nu semnează contracte cu implicații fiscale. Nu este verificat.",
+      "fr": "De nombreux étudiants qui ne travaillent pas ni ne signent de contrats à effet fiscal. Non vérifié.",
+      "ar": "كثير من الطلاب الذين لا يعملون ولا يوقّعون عقودًا ذات أثر ضريبي. لم يتم التحقق من ذلك."
+    },
+    "submitWhere": {
+      "en": "At the county tax administration (for Timișoara: ANAF, Str. Gheorghe Lazăr 9B). Ask which form and documents apply to you.",
+      "ro": "La administrația județeană a finanțelor publice (în Timișoara: ANAF, Str. Gheorghe Lazăr 9B). Întreabă ce formular și ce acte se aplică în cazul tău.",
+      "fr": "À l’administration fiscale du département (à Timișoara : ANAF, Str. Gheorghe Lazăr 9B). Demandez quel formulaire et quels documents s’appliquent.",
+      "ar": "لدى الإدارة الضريبية للمقاطعة (في تيميشوارا: ANAF، شارع غيورغي لازار 9B). اسأل عن النموذج والمستندات المناسبة لحالتك."
+    },
+    "documents": [
+      {
+        "name": { "en": "Passport and residence permit or registration certificate" },
+        "whereToGet": { "en": "Issued by your home country and by IGI" },
+        "level": "confirm"
+      },
+      {
+        "name": { "en": "The application form ANAF asks for in your case" },
+        "whereToGet": { "en": "ANAF website (anaf.ro) or the ANAF office" },
+        "level": "confirm"
+      }
+    ],
+    "steps": [
+      {
+        "text": { "en": "Check whether anyone (employer, bank, contract) actually asks for a tax number." },
+        "level": "recommended"
+      },
+      {
+        "text": { "en": "If yes, ask ANAF which form and documents apply to you. The Timiș office address, phone and public opening hours are listed on the Institutions page." },
+        "level": "confirm",
+        "sourceIds": ["anaf-timis-contact"]
+      },
+      { "text": { "en": "Use the Romanian helper to prepare a polite question for the counter." }, "level": "recommended" }
+    ],
+    "warnings": [
+      {
+        "text": { "en": "The process for foreign citizens was not verified from official pages for this app." },
+        "level": "confirm"
+      }
+    ],
+    "processingTime": null,
+    "deadline": null,
+    "priority": {
+      "level": "low",
+      "reason": {
+        "en": "Most students do not need it at the start.",
+        "ro": "Majoritatea studenților nu au nevoie de el la început.",
+        "fr": "La plupart des étudiants n’en ont pas besoin au début.",
+        "ar": "لا يحتاجه معظم الطلاب في البداية."
+      }
+    },
+    "audience": [{ "situations": ["student", "worker", "refugee", "other"], "citizenships": ["eu", "non-eu"], "relevance": "verify" }],
+    "sourceIds": ["anaf-home", "anaf-timis-contact"],
+    "lastVerified": "2026-11-13"
+  }
+]
